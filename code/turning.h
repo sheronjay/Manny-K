@@ -1,3 +1,4 @@
+#include <Arduino.h>
 
 // Motor Left
 #define ENCAL 2
@@ -34,7 +35,7 @@ float previousErrorL = 0, previousErrorR = 0; // Previous errors for derivative 
 volatile int posL = 0; // Encoder position for left motor
 volatile int posR = 0; // Encoder position for right motor
 
-void setup() {
+void encoderSetup() {
   Serial.begin(9600);
 
   //BTSerial.begin(9600);  // Start communication with Bluetooth module
@@ -60,7 +61,7 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(ENCAR), readEncoderR, RISING);
 }
 
-void loop() {
+void printConstants() {
 
   if (Serial.available()) {
     p = Serial.parseFloat();  // Read the first float (kP)
@@ -77,19 +78,6 @@ void loop() {
       Serial.println(KdA);
     }
   }
-
-  // Test turning
-  Serial.println("Turning 90 degrees:");
-  turn(90);
-  delay(3000);
-
-  Serial.println("Turning -90 degrees:");
-  turn(180);
-  delay(1000);
-
-  Serial.println("Turning 180 degrees:");
-  turn(360);
-  delay(1000);
 }
 
 void turn(int ang) {

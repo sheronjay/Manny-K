@@ -1,5 +1,6 @@
 #include "VL53L0X_Sensors.h"
 #include "wallFollow.h"
+#include "turning.h"
 
 
 void setup() {
@@ -11,6 +12,7 @@ void setup() {
 
   Serial.println("Initializing sensors...");
   initializeSensors();
+  encoderSetup();
 }
 
 void loop() {
@@ -19,4 +21,6 @@ void loop() {
   readThreeSensors(sensors);
   wallFollowPidControl(sensors[0], sensors[1], sensors[2]);
   delay(100);
+
+  printConstants();
 }
