@@ -2,11 +2,12 @@
 #include "wallFollow.h"
 #include "turning.h"
 
-
-void setup() {
+void setup()
+{
   Serial.begin(115200);
 
-  while (!Serial) {
+  while (!Serial)
+  {
     delay(1);
   }
 
@@ -15,7 +16,8 @@ void setup() {
   encoderSetup();
 }
 
-void loop() {
+void loop()
+{
   // Updates the sensor_left, right, and front variables
   float sensors[3];
   readThreeSensors(sensors);
@@ -23,4 +25,21 @@ void loop() {
   delay(100);
 
   printConstants();
+
+  if (sensors[1] < 500)
+  {
+
+    if (sensors[0] < 500)
+    {
+      turn(90);
+    }
+    else if (sensors[2] < 500)
+    {
+      turn(-90);
+    }
+    else
+    {
+      turn(180);
+    }
+  }
 }
