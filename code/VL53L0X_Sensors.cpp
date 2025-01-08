@@ -10,6 +10,10 @@ VL53L0X_RangingMeasurementData_t measure_left;
 VL53L0X_RangingMeasurementData_t measure_front;
 VL53L0X_RangingMeasurementData_t measure_right;
 
+float sensor_left;
+float sensor_front;
+float sensor_right;
+
 void initializeSensors() {
   // Set XSHUT pins as OUTPUT
   pinMode(SHT_LEFT, OUTPUT);
@@ -56,11 +60,12 @@ void initializeSensors() {
   delay(10);
 }
 
-void readThreeSensors() {
+void readThreeSensors(float sensors[3]) {
   // Read LEFT sensor
   left.rangingTest(&measure_left, false);
   Serial.print("Left: ");
   if (measure_left.RangeStatus != 4) {
+    sensor_left = measure_left.RangeMilliMeter;
     Serial.print(measure_left.RangeMilliMeter);
     Serial.print("mm");
   } else {
@@ -73,6 +78,7 @@ void readThreeSensors() {
   front.rangingTest(&measure_front, false);
   Serial.print("Front: ");
   if (measure_front.RangeStatus != 4) {
+    sensor_front = measure_front.RangeMilliMeter;
     Serial.print(measure_front.RangeMilliMeter);
     Serial.print("mm");
   } else {
@@ -85,6 +91,7 @@ void readThreeSensors() {
   right.rangingTest(&measure_right, false);
   Serial.print("Right: ");
   if (measure_right.RangeStatus != 4) {
+    sensor_right = measure_right.RangeMilliMeter;
     Serial.print(measure_right.RangeMilliMeter);
     Serial.print("mm");
   } else {
@@ -92,4 +99,7 @@ void readThreeSensors() {
   }
 
   Serial.println();
+  sensors[0] = sensor_left;
+  sensors[1] = sensor_front;
+  sensors[2] = sensor_right;
 }

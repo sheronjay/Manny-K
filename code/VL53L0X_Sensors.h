@@ -14,6 +14,6 @@
 
 // Function prototypes
 void initializeSensors();
-void readThreeSensors();
+void readThreeSensors(float sensors[3]);
 
 

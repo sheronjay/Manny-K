@@ -1,16 +1,16 @@
+#include "wallFollow.h"
+
 // Constants for the distance controller
 float KpD = 1.0;  // Proportional gain
 float KiD = 0.0;  // Integral gain
 float KdD = 0.0;  // Derivative gain
 
-// Variables for PID control
 float previousError = 0;
 float integral = 0;
-int pwmValue = 0; // PWM value for motor control
+int pwmValue = 0;
 int motorSpeed = 150;
 
-
-void wallFollowPidControl(int sensor_left, int sensor_right, int sensor_front) {
+void wallFollowPidControl(float sensor_left, float sensor_right, float sensor_front) {
   // Calculate error: difference between left and right sensors
   float error = sensor_left - sensor_right;
   integral += error;

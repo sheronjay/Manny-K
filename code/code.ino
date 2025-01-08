@@ -1,4 +1,6 @@
 #include "VL53L0X_Sensors.h"
+#include "wallFollow.h"
+
 
 void setup() {
   Serial.begin(115200);
@@ -13,6 +15,8 @@ void setup() {
 
 void loop() {
   // Updates the sensor_left, right, and front variables
-  readThreeSensors();
+  float sensors[3];
+  readThreeSensors(sensors);
+  wallFollowPidControl(sensors[0], sensors[1], sensors[2]);
   delay(100);
 }
