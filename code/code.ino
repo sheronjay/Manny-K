@@ -27,9 +27,19 @@ void loop()
   printConstants();
 
   if (sensors[1] < 100) {
-    Serial.println("Turning 180 ");
+    //Serial.println("Turning");
+    if(sensors[0]>500){
+      turn(-90);
+    }
 
+    else if(sensors[2]>500){
+      turn(90);
+    }
+
+    else{
     turn(180);
+    }
+
   }
 
 

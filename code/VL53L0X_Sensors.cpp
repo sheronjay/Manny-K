@@ -70,6 +70,7 @@ void readThreeSensors(float sensors[3]) {
     Serial.print("mm");
   } else {
     Serial.print("Out of range");
+    sensor_left = 600;
   }
 
   Serial.print(" ");
@@ -83,6 +84,7 @@ void readThreeSensors(float sensors[3]) {
     Serial.print("mm");
   } else {
     Serial.print("Out of range");
+    sensor_front = 800;
   }
 
   Serial.print(" ");
@@ -96,6 +98,7 @@ void readThreeSensors(float sensors[3]) {
     Serial.print("mm");
   } else {
     Serial.print("Out of range");
+    sensor_right = 600;
   }
 
   Serial.println();

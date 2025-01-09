@@ -20,9 +20,9 @@ float r = 3.3;  // Wheel radius (cm)
 int ratio = (75*823.1)/360; // Gear ratio
 
 // Global Variables for PID
-float KpA = 1.0;  // Proportional gain
-float KiA = 0.01;  // Integral gain
-float KdA = 2.5;  // Derivative gain
+float KpA = 2.0;  // Proportional gain
+float KiA = 0.00;  // Integral gain
+float KdA = 0.0;  // Derivative gain
 
 float p;
 float i;
