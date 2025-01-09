@@ -35,6 +35,47 @@ float previousErrorL = 0, previousErrorR = 0; // Previous errors for derivative 
 volatile int posL = 0; // Encoder position for left motor
 volatile int posR = 0; // Encoder position for right motor
 
+void readEncoderL() {
+  int b = digitalRead(ENCBL);
+  if (b > 0) {
+    posL++;
+  } else {
+    posL--;
+  }
+}
+
+void readEncoderR() {
+  int b = digitalRead(ENCBR);
+  if (b > 0) {
+    posR++;
+  } else {
+    posR--;
+  }
+}
+
+// Function to calculate PID output
+float calculatePID(float error, float *integral, float *previousError) {
+  if (int(error) == 0) {
+    return 0;
+  }
+  // Proportional term
+  float proportional = KpA * error;
+
+  // Integral term
+  *integral += error;
+  float integralTerm = KiA * (*integral);
+
+  // Derivative term
+  float derivative = KdA * (error - *previousError);
+
+  // Update previous error
+  *previousError = error;
+
+  // Combine terms
+  return proportional + integralTerm + derivative;
+}
+
+
 void encoderSetup() {
   Serial.begin(9600);
 
@@ -55,6 +96,8 @@ void encoderSetup() {
   pinMode(PWMR, OUTPUT);
   pinMode(IN1R, OUTPUT);
   pinMode(IN2R, OUTPUT);
+
+
 
   // Attach interrupts for encoders
   attachInterrupt(digitalPinToInterrupt(ENCAL), readEncoderL, RISING);
@@ -121,23 +164,6 @@ void turn(int ang) {
   return;
 }
 
-void readEncoderL() {
-  int b = digitalRead(ENCBL);
-  if (b > 0) {
-    posL++;
-  } else {
-    posL--;
-  }
-}
-
-void readEncoderR() {
-  int b = digitalRead(ENCBR);
-  if (b > 0) {
-    posR++;
-  } else {
-    posR--;
-  }
-}
 
 // Function to control motor direction and speed
 void setMotor(int dir, int pwmVal, int pwm, int in1, int in2) {
@@ -156,24 +182,4 @@ void setMotor(int dir, int pwmVal, int pwm, int in1, int in2) {
   }
 }
 
-// Function to calculate PID output
-float calculatePID(float error, float *integral, float *previousError) {
-  if (int(error) == 0) {
-    return 0;
-  }
-  // Proportional term
-  float proportional = KpA * error;
 
-  // Integral term
-  *integral += error;
-  float integralTerm = KiA * (*integral);
-
-  // Derivative term
-  float derivative = KdA * (error - *previousError);
-
-  // Update previous error
-  *previousError = error;
-
-  // Combine terms
-  return proportional + integralTerm + derivative;
-}

@@ -8,9 +8,9 @@
 #define RIGHT_ADDRESS 0x32
 
 // XSHUT pins
-#define SHT_LEFT 5
-#define SHT_FRONT 6
-#define SHT_RIGHT 7
+#define SHT_LEFT 13
+#define SHT_FRONT 11
+#define SHT_RIGHT 12
 
 // Function prototypes
 void initializeSensors();
