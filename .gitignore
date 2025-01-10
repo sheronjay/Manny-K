@@ -33,3 +33,6 @@
 
 # vscode configuration not for code
 /.vscode/
+
+# upload script
+upload_to_arduino.sh
