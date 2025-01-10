@@ -2,6 +2,7 @@
 #include "wallFollow.h"
 #include "turning.h"
 #include "variablesAndParameters.h"
+#include "bluetooth_update.h"
 
 void setup()
 {
@@ -11,6 +12,9 @@ void setup()
   {
     delay(1);
   }
+
+  Serial.println("Bluetooth initialization...");
+  setupBluetooth();
 
   Serial.println("Initializing sensors...");
   initializeSensors();
