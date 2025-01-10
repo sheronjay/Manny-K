@@ -1,3 +1,11 @@
 #pragma once // Makes sure the header file is not defined ( conditional define statement )
 
-float forward_threshold = 100;
+
+// Thresholds for the sensors and PID constants
+int forward_threshold = 100; // Threshold for the front sensor to detect end of the path
+int side_threshold = 500; // Threshold for the side sensors to detect a wall
+int side_threshold_error = 100; // Error threshold for the side sensors
+float K_singlewall_correction = 0.8;
+
+int maze_width = 500; // Width of the maze in mm
+int car_width = 150; // Width of the car in mm

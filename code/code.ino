@@ -30,12 +30,12 @@ void loop()
   if (sensors[1] < forward_threshold)
   {
     // Serial.println("Turning");
-    if (sensors[0] > 500)
+    if (sensors[0] > side_threshold)
     {
       turn(-90);
     }
 
-    else if (sensors[2] > 500)
+    else if (sensors[2] > side_threshold)
     {
       turn(90);
     }
