@@ -1,4 +1,5 @@
 #include "wallFollow.h"
+#include "motorcontrol.h"
 
 // Constants for the distance controller
 float KpD = 0.5;  // Proportional gain
@@ -57,22 +58,3 @@ void wallFollowPidControl(float sensor_left, float sensor_right, float sensor_fr
   // Update previous error for the next cycle
   previousError = error;
 }
-
-// void setMotor(int dir, int pwmVal, int pwm, int in1, int in2){
-//   pwmVal = constrain(pwmVal, 0, 255);  // Ensure pwmVal is within valid range
-//   analogWrite(pwm, pwmVal);
-//   if (dir == 1) {
-//     // Forward movement
-//     digitalWrite(in1, HIGH);
-//     digitalWrite(in2, LOW);
-//   } else if (dir == -1) {
-//     // Reverse movement
-//     digitalWrite(in2, HIGH);
-//     digitalWrite(in1, LOW);
-//   } else {
-//     // Stop motors
-//     digitalWrite(in1, LOW);
-//     digitalWrite(in2, LOW);
-//   }
-//   delay(10);
-// }
