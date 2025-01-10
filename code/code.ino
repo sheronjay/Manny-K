@@ -1,6 +1,7 @@
 #include "VL53L0X_Sensors.h"
 #include "wallFollow.h"
 #include "turning.h"
+#include "variablesAndParameters.h"
 
 void setup()
 {
@@ -26,37 +27,22 @@ void loop()
 
   printConstants();
 
-  if (sensors[1] < 100) {
-    //Serial.println("Turning");
-    if(sensors[0]>500){
+  if (sensors[1] < forward_threshold)
+  {
+    // Serial.println("Turning");
+    if (sensors[0] > 500)
+    {
       turn(-90);
     }
 
-    else if(sensors[2]>500){
+    else if (sensors[2] > 500)
+    {
       turn(90);
     }
 
-    else{
-    turn(180);
+    else
+    {
+      turn(180);
     }
-
   }
-
-
-  // if (sensors[1] < 100)
-  // {
-
-  //   if (sensors[0] > 1000)
-  //   {
-  //     turn(90);
-  //   }
-  //   else if (sensors[2] > 1000)
-  //   {
-  //     turn(-90);
-  //   }
-  //   else
-  //   {
-  //     turn(180);
-  //   }
-  // }
 }
