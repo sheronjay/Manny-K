@@ -24,22 +24,21 @@ void setup()
 void loop()
 {
   // Updates the sensor_left, right, and front variables
-  float sensors[3];
-  readThreeSensors(sensors);
-  wallFollowPidControl(sensors[0], sensors[2], sensors[1]); // sensor[0]=sensor left   sensors[2]=sensors right    sensors[1]=sensors front
+  readThreeSensors();
+  wallFollowPidControl(sensor_left, sensor_right, sensor_front);
   delay(100);
 
   printConstants();
 
-  if (sensors[1] < forward_threshold)
+  if (sensor_front < forward_threshold)
   {
     // Serial.println("Turning");
-    if (sensors[0] > side_threshold)
+    if (sensor_left > side_threshold)
     {
       turn(-90);
     }
 
-    else if (sensors[2] > side_threshold)
+    else if (sensor_right > side_threshold)
     {
       turn(90);
     }

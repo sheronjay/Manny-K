@@ -1,4 +1,5 @@
 #include "VL53L0X_Sensors.h"
+#include "variablesAndParameters.h"
 
 // Sensor objects
 Adafruit_VL53L0X left = Adafruit_VL53L0X();
@@ -9,10 +10,6 @@ Adafruit_VL53L0X right = Adafruit_VL53L0X();
 VL53L0X_RangingMeasurementData_t measure_left;
 VL53L0X_RangingMeasurementData_t measure_front;
 VL53L0X_RangingMeasurementData_t measure_right;
-
-float sensor_left;
-float sensor_front;
-float sensor_right;
 
 void initializeSensors() {
   // Set XSHUT pins as OUTPUT
@@ -60,7 +57,7 @@ void initializeSensors() {
   delay(10);
 }
 
-void readThreeSensors(float sensors[3]) {
+void readThreeSensors() {
   // Read LEFT sensor
   left.rangingTest(&measure_left, false);
   Serial.print("Left: ");
@@ -102,7 +99,4 @@ void readThreeSensors(float sensors[3]) {
   }
 
   Serial.println();
-  sensors[0] = sensor_left;
-  sensors[1] = sensor_front;
-  sensors[2] = sensor_right;
 }

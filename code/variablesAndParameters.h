@@ -8,3 +8,9 @@ extern float K_singlewall_correction;
 
 extern int maze_width; // Width of the maze in mm
 extern int car_width; // Width of the car in mm
+
+
+// sensor readings
+extern float sensor_left;
+extern float sensor_front;
+extern float sensor_right;
