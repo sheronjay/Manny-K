@@ -50,18 +50,10 @@ void wallFollowPidControl(float sensor_left, float sensor_right, float sensor_fr
   pwmValue = KpD * error + KiD * integral + KdD * derivative;
   Serial.println(pwmValue);
 
-  // If obstacle is detected in front, stop or reverse
-  if (sensor_front < forward_threshold)
-  {                                   // Adjust this threshold based on your sensor range
-    setMotor(0, 0, PWML, IN1L, IN2L); // Stop the motors
-    setMotor(0, 0, PWMR, IN1R, IN2R);
-  }
-  else
-  {
-    // Apply the PID correction to motors
-    setMotor(1, motorSpeed - pwmValue, PWML, IN1L, IN2L);
-    setMotor(1, motorSpeed + pwmValue, PWMR, IN1R, IN2R);
-  }
+  // Apply the PID correction to motors
+  setMotor(1, motorSpeed - pwmValue, PWML, IN1L, IN2L);
+  setMotor(1, motorSpeed + pwmValue, PWMR, IN1R, IN2R);
+
   // Update previous error for the next cycle
   previousError = error;
 }

@@ -2,20 +2,8 @@
 
 #include <Arduino.h>
 #include "motorcontrol.h"
-
-// Motor Left
-#define ENCAL 2
-#define ENCBL 3
-#define PWML 4
-#define IN1L 5
-#define IN2L 6
-
-// Motor Right
-#define ENCAR 18
-#define ENCBR 19
-#define PWMR 8
-#define IN1R 9
-#define IN2R 10
+#include "variablesAndParameters.h"
+#include "pins.h"
 
 // Robot constants
 float l = 17.5; // Wheelbase length (cm)
@@ -34,27 +22,6 @@ float d;
 float errorL = 0, errorR = 0; // Error values for left and right motors
 float integralL = 0, integralR = 0; // Integral terms
 float previousErrorL = 0, previousErrorR = 0; // Previous errors for derivative calculation
-
-volatile int posL = 0; // Encoder position for left motor
-volatile int posR = 0; // Encoder position for right motor
-
-void readEncoderL() {
-  int b = digitalRead(ENCBL);
-  if (b > 0) {
-    posL++;
-  } else {
-    posL--;
-  }
-}
-
-void readEncoderR() {
-  int b = digitalRead(ENCBR);
-  if (b > 0) {
-    posR++;
-  } else {
-    posR--;
-  }
-}
 
 // Function to calculate PID output
 float calculatePID(float error, float *integral, float *previousError) {

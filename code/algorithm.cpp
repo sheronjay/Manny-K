@@ -5,6 +5,8 @@
 #include <array>
 #include <vector>
 #include <algorithm>
+#include "checkMaze.h"
+#include "motorcontrol.h"
 
 // Constants
 const int MAZE_SIZE = 16;
@@ -52,13 +54,13 @@ constexpr int direction_map[4][3][3] = {
     {{-1, 0, 8}, {0, -1, 4}, {0, 1, 1}}   // Facing West
 };
 
-// External function declarations (implemented by robot)
-extern bool wallLeft();
-extern bool wallFront();
-extern bool wallRight();
-extern void turnLeft();
-extern void turnRight();
-extern void moveForward();
+// // External function declarations (implemented by robot)
+// extern bool wallLeft();
+// extern bool wallFront();
+// extern bool wallRight();
+// extern void turnLeft();
+// extern void turnRight();
+// extern void moveForward();
 
 // Helper functions
 void initializeMazeArray() {
