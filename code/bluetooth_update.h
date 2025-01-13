@@ -43,9 +43,6 @@ void parseData(String data)
 
 void setupBluetooth()
 {
-  // Initialize Serial for debugging
-  Serial.begin(9600);
-
   // Initialize Bluetooth module communication
   bluetooth.begin(9600); // Default baud rate for HC-05
   Serial.println("Bluetooth module is ready...");

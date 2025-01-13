@@ -47,11 +47,6 @@ float calculatePID(float error, float *integral, float *previousError) {
 
 
 void encoderSetup() {
-  Serial.begin(9600);
-
-  //BTSerial.begin(9600);  // Start communication with Bluetooth module
-  Serial.println("Bluetooth HC-05 Module Started");
-
 
   // Encoder pins setup
   pinMode(ENCAL, INPUT);
