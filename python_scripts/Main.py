@@ -1,16 +1,17 @@
 import API
 import sys
+from collections import deque
 
 # Wall north 1
 # Wall east 2
 # Wall south 4
 # Wall west 8
 
-maze = [[float('inf') for _ in range(16)] for _ in range(16)]
-
 # Remember along a row what we have is the vertical wall
 # Along a colomn what we have is the horizontal wall
 # Along a row we have the y coordinate, along a column we have the x coordinate
+maze = [[float('inf') for _ in range(16)] for _ in range(16)]
+
 walls = [[12, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9],
          [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
          [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -38,9 +39,10 @@ directions = [
 wall_bits = [1, 2, 4, 8]  # Corresponding to North, East, South, West
 
 
-def floodfillBFS():
+def floodfill():
     global maze, walls, directions, wall_bits
-    queue = []
+    maze = [[float('inf') for _ in range(16)] for _ in range(16)]
+    queue = deque()  # Use deque for efficient pop from the left
     # Define goals and set their distances to 0
     goals = [(7, 7), (7, 8), (8, 7), (8, 8)]
     for goal in goals:
@@ -48,19 +50,15 @@ def floodfillBFS():
         maze[goal[0]][goal[1]] = 0
 
     while queue:
-        x, y = queue.pop(0) 
- 
+        x, y = queue.popleft()  # Efficient pop from left
         current_distance = maze[x][y]
-
-        # Checking for
         for d, (dx, dy) in enumerate(directions):
             nx, ny = x + dx, y + dy
             # Check bounds and walls
-            if 0 <= nx < 16 and 0 <= ny < 16 and (walls[x][y] & wall_bits[d] == 0): 
+            if 0 <= nx < 16 and 0 <= ny < 16 and (walls[x][y] & wall_bits[d] == 0):
                 if maze[nx][ny] > current_distance + 1:
                     maze[nx][ny] = current_distance + 1
-            
-                    queue.append((nx, ny))
+                    queue.append((nx, ny))  # Only append if distance is updated
             
 
 def log(string):
@@ -92,14 +90,13 @@ def updateMazeWalls():
 
 def updateDistances(x, y):
     global walls, maze, directions, wall_bits
-    queue = [(x, y)]
-    visited = set()  # To prevent redundant processing
+    stack = [(x, y)]  # Use a stack instead of a queue
 
-    while queue:
-        currentPos = queue.pop(0)
+    while stack:
+        currentPos = stack.pop()  # Pop from the top of the stack
         cx, cy = currentPos
         currentDistance = maze[cx][cy]
-        minDistance = currentDistance
+        minDistance = float('inf')
 
         neighbors = []
         for d, (dx, dy) in enumerate(directions):
@@ -114,9 +111,8 @@ def updateDistances(x, y):
         if currentDistance != minDistance + 1:
             maze[cx][cy] = minDistance + 1
             for neighbor in neighbors:
-                if neighbor not in visited:
-                    queue.append(neighbor)
-                    visited.add(neighbor)
+                stack.append(neighbor)  # Push neighbor onto the stack
+
 
 def main():
     global walls, directions, maze
@@ -125,8 +121,9 @@ def main():
     API.setColor(0, 0, "G")
     API.setText(0, 0, "START") 
     updateMazeWalls()
-    floodfillBFS()
+    floodfill()
     updateMazeDistances()
+
 
     # Starting point
     currentPos = (0, 0)
@@ -144,10 +141,9 @@ def main():
         3: {"front": (-1, 0, 8), "left": (0, -1, 4), "right": (0, 1, 1)}  # Facing West
     }
 
-    while True:
+    while len(visited) < 256:
         visited.add(currentPos)
         x, y = currentPos
-
         print(f"Mouse currently at {currentPos}, with orientation: {orient}")
         # Scan for walls and make record of walls
         print(f"Wall value before: {walls[x][y]}")
@@ -163,7 +159,8 @@ def main():
         updateMazeWalls()
 
         # Calculate new distances using floodfill
-        updateDistances(x,y)
+        # updateDistances(x, y)
+        floodfill()
 
         updateMazeDistances()
 
@@ -220,6 +217,7 @@ def main():
                 case 3: orient = 1
 
             print("Done turning back")
+
             while backtrackStack:
                 bx, by = backtrackStack[-1]  # Peek at the top of the stack
                 print(f"Currently in ({bx} , {by}) with orientation: {orient}")
@@ -229,6 +227,7 @@ def main():
                     if 0 <= nx < 16 and 0 <= ny < 16: # Inside the grid
                         if walls[bx][by] & wall_bits[d] == 0 and (nx, ny) not in visited: # No wall in this direction
                             unvisitedNeighbors = True
+                            
                 if unvisitedNeighbors: 
                     print("There are unvisited neighbors")
                     currentPos = (bx, by)
@@ -241,9 +240,11 @@ def main():
                     # Move to previous cell, by changing the orientation as necessary
                     px, py = backtrackStack[-1]  # Peek at the next cell to backtrack to
                     print(f"Now going to move to cell ({px}, {py})")
-
                     #Directions:
                     #0: North, 1: East, 2: South, 3: West
+
+                    if px == bx and py == by:
+                        continue
                 
                     direction_map = {
                         (0, 1): 0,   # North
@@ -251,12 +252,13 @@ def main():
                         (1, 0): 1,   # East
                         (-1, 0): 3   # West
                     }
-
+         
                     direction = direction_map[(px - bx, py - by)]
+     
                     print(f"The direction to move is {direction}")
 
-                    turn = (direction - orient) % 4
 
+                    turn = (direction - orient) % 4
                     # Execute the turn based on the relative direction
                     if turn == 1:  # Turn right
                         API.turnRight()
@@ -278,12 +280,9 @@ def main():
                     orient = direction  # Update the orientation to the new direction
                     currentPos = (px, py)  # Update the current position
             print(f"Finished backtracking at ({currentPos})")
-
+    floodfill()
+    updateMazeDistances()
 
       
-        
-
-        
-
 if __name__ == "__main__":
     main()
