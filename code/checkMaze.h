@@ -1,5 +1,5 @@
 #pragma once
 
-bool checkLeft();
-bool checkRight();
-bool checkfront();
+bool wallLeft();
+bool wallFront();
+bool wallRight();

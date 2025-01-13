@@ -1,19 +1,19 @@
 #include <Arduino.h>
 #include "variablesAndParameters.h"
 
-bool checkLeft()
+bool wallLeft()
 {
   // Check the left sensor
   return digitalRead(sensor_left) < side_threshold;
 }
 
-bool checkRight()
+bool wallRight()
 {
   // Check the right sensor
   return digitalRead(sensor_right) < side_threshold;
 }
 
-bool checkfront()
+bool wallFront()
 {
   // Check the front sensor
   return digitalRead(sensor_front) < forward_threshold;
