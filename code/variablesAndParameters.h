@@ -14,3 +14,13 @@ extern int car_width; // Width of the car in mm
 extern float sensor_left;
 extern float sensor_front;
 extern float sensor_right;
+
+
+// run algorithm at encoder counts
+extern int encoder_counts;
+extern int cell_size;
+
+
+// encoder values
+extern int posL; // Encoder position for left motor
+extern int posR; // Encoder position for right motor

@@ -1,5 +1,7 @@
 #include "motorcontrol.h"
 #include <Arduino.h>
+#include "variablesAndParameters.h"
+#include "pins.h"
 
 // Function to control motor direction and speed
 void setMotor(int dir, int pwmVal, int pwm, int in1, int in2)
@@ -21,5 +23,31 @@ void setMotor(int dir, int pwmVal, int pwm, int in1, int in2)
     { // Stop
         digitalWrite(in1, LOW);
         digitalWrite(in2, LOW);
+    }
+}
+
+void readEncoderL()
+{
+    int b = digitalRead(ENCBL);
+    if (b > 0)
+    {
+        posL++;
+    }
+    else
+    {
+        posL--;
+    }
+}
+
+void readEncoderR()
+{
+    int b = digitalRead(ENCBR);
+    if (b > 0)
+    {
+        posR++;
+    }
+    else
+    {
+        posR--;
     }
 }

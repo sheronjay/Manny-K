@@ -30,22 +30,23 @@ void loop()
 
   printConstants();
 
-  if (sensor_front < forward_threshold)
-  {
-    // Serial.println("Turning");
-    if (sensor_left > side_threshold)
-    {
-      turn(-90);
-    }
+  
 
-    else if (sensor_right > side_threshold)
-    {
-      turn(90);
-    }
+  // if (sensor_front < forward_threshold)
+  // {
+  //   if (sensor_left > side_threshold)
+  //   {
+  //     turn(-90);
+  //   }
 
-    else
-    {
-      turn(180);
-    }
-  }
+  //   else if (sensor_right > side_threshold)
+  //   {
+  //     turn(90);
+  //   }
+
+  //   else
+  //   {
+  //     turn(180);
+  //   }
+  // }
 }
