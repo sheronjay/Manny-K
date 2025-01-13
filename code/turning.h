@@ -131,6 +131,10 @@ void turn(int ang) {
   setMotor(0, 0, PWMR, IN1R, IN2R);
 
   delay(1000); // Allow time to stabilize
+
+  // reset the encoderCount which used to call the algorithm at each new cell
+  encoder_counts = 0;
+
   return;
 }
 

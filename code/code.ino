@@ -3,6 +3,7 @@
 #include "turning.h"
 #include "variablesAndParameters.h"
 #include "bluetooth_update.h"
+#include "algorithm.h"
 
 void setup()
 {
@@ -12,6 +13,8 @@ void setup()
   {
     delay(1);
   }
+
+  algorithmSetup();
 
   Serial.println("Bluetooth initialization...");
   setupBluetooth();
@@ -30,23 +33,9 @@ void loop()
 
   printConstants();
 
-  
-
-  // if (sensor_front < forward_threshold)
-  // {
-  //   if (sensor_left > side_threshold)
-  //   {
-  //     turn(-90);
-  //   }
-
-  //   else if (sensor_right > side_threshold)
-  //   {
-  //     turn(90);
-  //   }
-
-  //   else
-  //   {
-  //     turn(180);
-  //   }
-  // }
+  if (encoder_counts >= cell_size)
+  {
+    algorithmLoop();
+    encoder_counts = 0;
+  }
 }

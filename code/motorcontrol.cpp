@@ -29,6 +29,7 @@ void setMotor(int dir, int pwmVal, int pwm, int in1, int in2)
 
 void readEncoderL()
 {
+    encoder_counts++;
     int b = digitalRead(ENCBL);
     if (b > 0)
     {

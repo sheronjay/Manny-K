@@ -17,8 +17,8 @@ extern float sensor_right;
 
 
 // run algorithm at encoder counts
-extern int encoder_counts;
-extern int cell_size;
+extern int encoder_counts;  // this is used to call the algorithm at each new cell
+extern int cell_size; // size of each cell wrt encoder counts
 
 
 // encoder values
