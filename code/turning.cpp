@@ -10,9 +10,9 @@ float r = 3.3;  // Wheel radius (cm)
 int ratio = (75*823.1)/360; // Gear ratio
 
 // Global Variables for PID
-float KpA = 2.0;  // Proportional gain
+float KpA = 1.0;  // Proportional gain
 float KiA = 0.00;  // Integral gain
-float KdA = 0.0;  // Derivative gain
+float KdA = 2.0;  // Derivative gain
 
 float p;
 float i;
@@ -42,30 +42,6 @@ float calculatePID(float error, float *integral, float *previousError) {
 
   // Combine terms
   return proportional + integralTerm + derivative;
-}
-
-
-void encoderSetup() {
-
-  // Encoder pins setup
-  pinMode(ENCAL, INPUT);
-  pinMode(ENCBL, INPUT);
-  pinMode(ENCAR, INPUT);
-  pinMode(ENCBR, INPUT);
-
-  // Motor pins setup
-  pinMode(PWML, OUTPUT);
-  pinMode(IN1L, OUTPUT);
-  pinMode(IN2L, OUTPUT);
-  pinMode(PWMR, OUTPUT);
-  pinMode(IN1R, OUTPUT);
-  pinMode(IN2R, OUTPUT);
-
-
-
-  // Attach interrupts for encoders
-  attachInterrupt(digitalPinToInterrupt(ENCAL), readEncoderL, RISING);
-  attachInterrupt(digitalPinToInterrupt(ENCAR), readEncoderR, RISING);
 }
 
 void printConstants() {

@@ -5,7 +5,7 @@
 // Constants for the distance controller
 float KpD = 0.5; // Proportional gain
 float KiD = 0.0; // Integral gain
-float KdD = 0.1; // Derivative gain
+float KdD = 1.0; // Derivative gain
 
 float previousError = 0;
 float integral = 0;

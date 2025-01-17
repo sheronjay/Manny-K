@@ -27,6 +27,29 @@ void setMotor(int dir, int pwmVal, int pwm, int in1, int in2)
     }
 }
 
+void encoderSetup() {
+
+  // Encoder pins setup
+  pinMode(ENCAL, INPUT);
+  pinMode(ENCBL, INPUT);
+  pinMode(ENCAR, INPUT);
+  pinMode(ENCBR, INPUT);
+
+  // Motor pins setup
+  pinMode(PWML, OUTPUT);
+  pinMode(IN1L, OUTPUT);
+  pinMode(IN2L, OUTPUT);
+  pinMode(PWMR, OUTPUT);
+  pinMode(IN1R, OUTPUT);
+  pinMode(IN2R, OUTPUT);
+
+
+
+  // Attach interrupts for encoders
+  attachInterrupt(digitalPinToInterrupt(ENCAL), readEncoderL, RISING);
+  attachInterrupt(digitalPinToInterrupt(ENCAR), readEncoderR, RISING);
+}
+
 void readEncoderL()
 {
     encoder_counts++;
