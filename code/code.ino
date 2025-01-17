@@ -2,8 +2,9 @@
 #include "wallFollow.h"
 #include "turning.h"
 #include "variablesAndParameters.h"
-// #include "bluetooth_update.h"
 #include "algorithm.h"
+#include "wifiUpdateParameters.h"
+#include "motorcontrol.h"
 
 void setup()
 {
@@ -16,9 +17,8 @@ void setup()
 
   algorithmSetup();
 
-  // bluetooth
-  // Serial.println("Bluetooth initialization...");
-  // setupBluetooth();
+  // wifi
+  wifiSetup();
 
   Serial.println("Initializing sensors...");
   initializeSensors();
@@ -32,8 +32,8 @@ void loop()
   wallFollowPidControl(sensor_left, sensor_right, sensor_front);
   delay(100);
 
-  // bluetooth
-  // printConstants();
+  // Wifi
+  wifiLoop();
 
   if (encoder_counts >= cell_size)
   {

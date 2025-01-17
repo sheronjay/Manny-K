@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider Interface</title>
+    <script>
+        function updateValue(sliderId, inputId, value) {
+            document.getElementById(sliderId).value = value;
+            document.getElementById(inputId).value = value;
+            makeWebRequest(sliderId, value);
+        }
+
+        function makeWebRequest(sliderId, value) {
+            fetch(`https://http://192.168.8.114:80/write?${sliderId}=${value}`)
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
+        }
+
+        function fetchValues() {
+            fetch('https://http://192.168.8.114:80/read')
+                .then(response => response.json())
+                .then(data => {
+                    updateValue('slider1', 'input1', data.slider1);
+                    updateValue('slider2', 'input2', data.slider2);
+                    updateValue('slider3', 'input3', data.slider3);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        window.onload = fetchValues;
+
+    </script>
+</head>
+
+<body>
+    <div>
+        <button onclick="fetchValues()">Refresh</button>
+        <label for="slider1">Slider 1:</label>
+        <input type="range" id="slider1" min="0" max="100" value="50"
+            oninput="updateValue('slider1', 'input1', this.value)">
+        <input type="number" id="input1" min="0" max="100" value="50"
+            oninput="updateValue('slider1', 'input1', this.value)">
+    </div>
+    <div>
+        <label for="slider2">Slider 2:</label>
+        <input type="range" id="slider2" min="0" max="100" value="50"
+            oninput="updateValue('slider2', 'input2', this.value)">
+        <input type="number" id="input2" min="0" max="100" value="50"
+            oninput="updateValue('slider2', 'input2', this.value)">
+    </div>
+    <div>
+        <label for="slider3">Slider 3:</label>
+        <input type="range" id="slider3" min="0" max="100" value="50"
+            oninput="updateValue('slider3', 'input3', this.value)">
+        <input type="number" id="input3" min="0" max="100" value="50"
+            oninput="updateValue('slider3', 'input3', this.value)">
+    </div>
+</body>
+
+</html>

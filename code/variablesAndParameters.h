@@ -24,3 +24,12 @@ extern int cell_size; // size of each cell wrt encoder counts
 // encoder values
 extern int posL; // Encoder position for left motor
 extern int posR; // Encoder position for right motor
+
+
+extern float KpD; // Proportional gain for distance controller
+extern float KiD; // Integral gain for distance controller
+extern float KdD; // Derivative gain for distance controller
+
+extern float KpA; // Proportional gain for angle controller
+extern float KiA; // Integral gain for angle controller
+extern float KdA; // Derivative gain for angle controller

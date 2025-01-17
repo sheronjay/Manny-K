@@ -39,3 +39,6 @@
 
 # python scripts
 /python_scripts/venv/
+
+#wifi credentials
+/code/wifi_cred.h

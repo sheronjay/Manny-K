@@ -17,3 +17,11 @@ int cell_size = 100;
 
 int posL = 0; // Encoder position for left motor
 int posR = 0; // Encoder position for right motor
+
+float KpD = 0.5; // Proportional gain for distance controller
+float KiD = 0.0; // Integral gain for distance controller
+float KdD = 1.0; // Derivative gain for distance controller
+
+float KpA = 1.0; // Proportional gain for angle controller
+float KiA = 0.0; // Integral gain for angle controller
+float KdA = 2.0; // Derivative gain for angle controller

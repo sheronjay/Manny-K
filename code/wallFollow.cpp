@@ -3,10 +3,6 @@
 #include "variablesAndParameters.h"
 
 // Constants for the distance controller
-float KpD = 0.5; // Proportional gain
-float KiD = 0.0; // Integral gain
-float KdD = 1.0; // Derivative gain
-
 float previousError = 0;
 float integral = 0;
 int pwmValue = 0;
