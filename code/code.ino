@@ -16,7 +16,8 @@ void setup()
 
   algorithmSetup();
 
-  Serial.println("Bluetooth initialization...");
+  // bluetooth
+  // Serial.println("Bluetooth initialization...");
   // setupBluetooth();
 
   Serial.println("Initializing sensors...");
@@ -31,6 +32,7 @@ void loop()
   wallFollowPidControl(sensor_left, sensor_right, sensor_front);
   delay(100);
 
+  // bluetooth
   // printConstants();
 
   if (encoder_counts >= cell_size)
