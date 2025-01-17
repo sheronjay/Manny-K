@@ -7,6 +7,7 @@
 #include <algorithm>
 #include "checkMaze.h"
 #include "motorcontrol.h"
+#include <map>
 
 // Constants
 const int MAZE_SIZE = 16;
