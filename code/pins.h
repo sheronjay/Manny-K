@@ -1,16 +1,18 @@
 #pragma once
 
-// Motor Left
-#define ENCAL 13
-#define ENCBL 12
-#define PWML 5
-#define IN1L 1
-#define IN2L 18
+#define ENCAL 32
+#define ENCBL 35
 
-// Motor Right
-#define ENCAR 10
-#define ENCBR 9
-#define PWMR 32
-#define IN1R 23
-#define IN2R 25
+#define ENCAR 23
+#define ENCBR 22
+
+// Defining the input pins for the motor
+#define PWML 0
+#define IN1L 2
+#define IN2L 15
+
+// Defining the input pins for the motor
+#define PWMR 4
+#define IN1R 16
+#define IN2R 17
 

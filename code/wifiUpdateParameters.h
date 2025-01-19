@@ -7,4 +7,4 @@ void handleWrite();
 
 void wifiSetup();
 
-void wifiLoop();
+void wifiTask(void *parameter);

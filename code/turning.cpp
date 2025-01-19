@@ -5,9 +5,9 @@
 #include "pins.h"
 
 // Robot constants
-float l = 17.5; // Wheelbase length (cm)
-float r = 3.3;  // Wheel radius (cm)
-int ratio = (75*823.1)/360; // Gear ratio
+float l = 8.2; // Wheelbase length (cm)
+float r = 1.7;  // Wheel radius (cm)
+int ratio = 97*6; // Gear ratio
 
 
 float p;
