@@ -6,10 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Slider Interface</title>
     <script>
+
+        let live = false;
+
         function updateValue(sliderId, inputId, value) {
+            if (live) {
+                makeWebRequest(sliderId, value);
+            }
             document.getElementById(sliderId).value = value;
             document.getElementById(inputId).value = value;
-            makeWebRequest(sliderId, value);
         }
 
         function makeWebRequest(sliderId, value) {
@@ -36,13 +41,35 @@
                 .catch(error => console.error('Error:', error));
         }
 
+        function togleLive() {
+            live = !live;
+
+            if (live) {
+                document.getElementById('liveButton').innerText = 'Stop Live';
+            } else {
+                document.getElementById('liveButton').innerText = 'Go Live';
+            }
+        }
+
+        function updateAllValues() {
+            makeWebRequest('slider1', document.getElementById('input1').value);
+            makeWebRequest('slider2', document.getElementById('input2').value);
+            makeWebRequest('slider3', document.getElementById('input3').value);
+        }
+
         // window.onload = fetchValues;
+
+
 
     </script>
 </head>
 
 <body>
-    <button onclick="fetchValues()">Refresh</button>
+    <div>
+        <button onclick="fetchValues()">Refresh</button>
+        <button id="liveButton" onclick="togleLive()">Go Live</button>
+        <button onclick="updateAllValues()">Update</button>
+    </div>
     <div>
         <label for="slider1">Slider 1:</label>
         <input type="range" id="slider1" min="0" max="5" step="0.01" value="1"
