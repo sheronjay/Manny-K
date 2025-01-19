@@ -8,9 +8,9 @@
 #define ENCB 3
 
 // Defining the input pins for the motor
-#define PWM 5
-#define IN1 6
-#define IN2 7
+#define PWM 13
+#define IN1 12
+#define IN2 14
 
 // setting the starting position to zero
 int pos = 0;
@@ -20,15 +20,19 @@ void setup() {
   // Set the pins to input mode
   pinMode(ENCA, INPUT);
   pinMode(ENCB, INPUT);
+  pinMode(PWM, OUTPUT);
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
   // Attach interrupt takes 3 arguments, the pin to interrupt, the function to be called when interrupt is triggered and the mode
   attachInterrupt(digitalPinToInterrupt(ENCA), readEncoder, RISING);
 }
 
 void loop() {
   Serial.println(pos);
-  setMotor(1, 25, PWM, IN1, IN2);
-  delay(300);
-  setMotor(-1, 25, PWM, IN1, IN2);
+  setMotor(-1, 255, PWM, IN1, IN2);
+  delay(2000);
+  setMotor(1, 125, PWM, IN1, IN2);
+  delay(2000);
 }
 
 void readEncoder() {
