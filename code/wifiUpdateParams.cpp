@@ -13,7 +13,7 @@ void handleRead() {
    String message = "{";
    message += "\"slider1\": " + String(KpA) + ",";
    message += "\"slider2\": " + String(KdA) + ",";
-   message += "\"slider3\": " + String(KpA);
+   message += "\"slider3\": " + String(KiA);
    message += "}";
   server.send(200, "text/plain", message);
 }

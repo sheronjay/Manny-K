@@ -13,15 +13,21 @@
         }
 
         function makeWebRequest(sliderId, value) {
-            fetch(`https://http://192.168.8.114:80/write?${sliderId}=${value}`)
+            fetch(`http://192.168.8.114:80/write?${sliderId}=${value}`, {
+                    method: 'GET',
+                    mode: 'no-cors'
+                })
                 .then(response => response.json())
                 .then(data => console.log(data))
                 .catch(error => console.error('Error:', error));
         }
 
         function fetchValues() {
-            fetch('https://http://192.168.8.114:80/read')
-                .then(response => response.json())
+            fetch('http://192.168.8.114:80/read', {
+                    method: 'GET',
+                    mode: 'no-cors'
+                })
+                .then(response => response.text())
                 .then(data => {
                     updateValue('slider1', 'input1', data.slider1);
                     updateValue('slider2', 'input2', data.slider2);
