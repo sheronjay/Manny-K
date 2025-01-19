@@ -5,6 +5,7 @@
 #include "algorithm.h"
 #include "wifiUpdateParameters.h"
 #include "motorcontrol.h"
+#include <Arduino.h>
 
 void setup()
 {

@@ -1,7 +1,5 @@
 #pragma once // Makes sure the header file is not defined ( conditional define statement )
 
-#include "Adafruit_VL53L0X.h"
-
 // Sensor I2C addresses
 #define LEFT_ADDRESS 0x30
 #define FRONT_ADDRESS 0x31

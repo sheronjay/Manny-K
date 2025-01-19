@@ -1,15 +1,16 @@
 #pragma once
 
 // Motor Left
-#define ENCAL 2
-#define ENCBL 3
-#define PWML 4
-#define IN1L 5
-#define IN2L 6
+#define ENCAL 13
+#define ENCBL 12
+#define PWML 5
+#define IN1L 1
+#define IN2L 18
 
 // Motor Right
-#define ENCAR 18
-#define ENCBR 19
-#define PWMR 8
-#define IN1R 9
-#define IN2R 10
+#define ENCAR 10
+#define ENCBR 9
+#define PWMR 32
+#define IN1R 23
+#define IN2R 25
+

@@ -1,7 +1,5 @@
 #pragma once // Makes sure the header file is not defined ( conditional define statement )
 
-#include <Arduino.h>
-
 // Motor Left
 #define ENCAL 2
 #define ENCBL 3

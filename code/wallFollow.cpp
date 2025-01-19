@@ -1,6 +1,7 @@
 #include "wallFollow.h"
 #include "motorcontrol.h"
 #include "variablesAndParameters.h"
+#include <Arduino.h>
 
 // Constants for the distance controller
 float previousError = 0;

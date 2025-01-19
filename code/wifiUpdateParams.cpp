@@ -36,8 +36,6 @@ void handleWrite() {
 }
 
 void wifiSetup() {
-  // Initialize serial monitor and Wi-Fi connection
-  Serial.begin(115200);
   WiFi.begin(ssid, password);
   
   // Wait until connected to Wi-Fi
