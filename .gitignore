@@ -34,11 +34,11 @@
 # vscode configuration not for code
 /.vscode/
 
-# scripts
-/scripts/
-
 # python scripts
 /python_scripts/venv/
 
 #wifi credentials
 /code/wifi_cred.h
+
+#credentials and ports etc
+.env
