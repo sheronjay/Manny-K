@@ -22,6 +22,6 @@ float KpD = 0.5; // Proportional gain for distance controller
 float KiD = 0.0; // Integral gain for distance controller
 float KdD = 1.0; // Derivative gain for distance controller
 
-float KpA = 1.0; // Proportional gain for angle controller
+float KpA = 0.0; // Proportional gain for angle controller
 float KiA = 0.0; // Integral gain for angle controller
-float KdA = 2.0; // Derivative gain for angle controller
+float KdA = 0.0; // Derivative gain for angle controller

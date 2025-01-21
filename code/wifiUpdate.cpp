@@ -14,9 +14,9 @@ int mutableValue = 0;
 void handleRead()
 {
     String message = "{";
-    message += "\"slider1\": " + String(KpA) + ",";
-    message += "\"slider2\": " + String(KdA) + ",";
-    message += "\"slider3\": " + String(KpA);
+    message += "\"p\": " + String(KpA) + ",";
+    message += "\"d\": " + String(KdA) + ",";
+    message += "\"i\": " + String(KiA);
     message += "}";
     server.send(200, "text/plain", message);
 }
