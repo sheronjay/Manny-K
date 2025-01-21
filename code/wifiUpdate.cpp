@@ -1,200 +1,86 @@
-#include "wifiUpdate.h"
 #include <WiFi.h>
 #include <WebServer.h>
-#include "variablesAndParameters.h"
+#include <ArduinoOTA.h>
 #include "wifi_cred.h"
-#include <WiFiClient.h>
-#include <ESPmDNS.h>
-#include <Update.h>
+#include "wifiUpdate.h"
 
-// Set up a web server on port 80
-WebServer server(80);
+WebServer server(80); // Create a web server on port 80
 
-/*
- * Login page
- */
-const char *loginIndex =
-    "<form name='loginForm'>"
-    "<table width='20%' bgcolor='A09F9F' align='center'>"
-    "<tr>"
-    "<td colspan=2>"
-    "<center><font size=4><b>ESP32 Login Page</b></font></center>"
-    "<br>"
-    "</td>"
-    "<br>"
-    "<br>"
-    "</tr>"
-    "<td>Username:</td>"
-    "<td><input type='text' size=25 name='userid'><br></td>"
-    "</tr>"
-    "<br>"
-    "<br>"
-    "<tr>"
-    "<td>Password:</td>"
-    "<td><input type='Password' size=25 name='pwd'><br></td>"
-    "<br>"
-    "<br>"
-    "</tr>"
-    "<tr>"
-    "<td><input type='submit' onclick='check(this.form)' value='Login'></td>"
-    "</tr>"
-    "</table>"
-    "</form>"
-    "<script>"
-    "function check(form)"
-    "{"
-    "if(form.userid.value=='admin' && form.pwd.value=='admin')"
-    "{"
-    "window.open('/serverIndex')"
-    "}"
-    "else"
-    "{"
-    " alert('Error Password or Username')/*displays error message*/"
-    "}"
-    "}"
-    "</script>";
+// Global variable to store a mutable value
+int mutableValue = 0;
 
-/*
- * Server Index Page
- */
-
-const char *serverIndex =
-    "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>"
-    "<form method='POST' action='#' enctype='multipart/form-data' id='upload_form'>"
-    "<input type='file' name='update'>"
-    "<input type='submit' value='Update'>"
-    "</form>"
-    "<div id='prg'>progress: 0%</div>"
-    "<script>"
-    "$('form').submit(function(e){"
-    "e.preventDefault();"
-    "var form = $('#upload_form')[0];"
-    "var data = new FormData(form);"
-    " $.ajax({"
-    "url: '/update',"
-    "type: 'POST',"
-    "data: data,"
-    "contentType: false,"
-    "processData:false,"
-    "xhr: function() {"
-    "var xhr = new window.XMLHttpRequest();"
-    "xhr.upload.addEventListener('progress', function(evt) {"
-    "if (evt.lengthComputable) {"
-    "var per = evt.loaded / evt.total;"
-    "$('#prg').html('progress: ' + Math.round(per*100) + '%');"
-    "}"
-    "}, false);"
-    "return xhr;"
-    "},"
-    "success:function(d, s) {"
-    "console.log('success!')"
-    "},"
-    "error: function (a, b, c) {"
-    "}"
-    "});"
-    "});"
-    "</script>";
-
-// Handler to read constant value
-void handleRead()
-{
-  String message = "{";
-  message += "\"slider1\": " + String(KpA) + ",";
-  message += "\"slider2\": " + String(KdA) + ",";
-  message += "\"slider3\": " + String(KiA);
-  message += "}";
-  server.send(200, "text/plain", message);
+// Function to handle the "/read" endpoint
+void handleRead() {
+    server.send(200, "text/plain", String(mutableValue));
 }
 
-// Handler to write mutable value
-void handleWrite()
-{
-  if (server.hasArg("slider1"))
-  {
-    KpA = server.arg("slider1").toInt();
-    server.send(200, "text/plain", "Mutable Value Set to: " + String(KpA));
-  }
-  else if (server.hasArg("slider2"))
-  {
-    KdA = server.arg("slider2").toInt();
-    server.send(200, "text/plain", "Mutable Value Set to: " + String(KdA));
-  }
-  else if (server.hasArg("slider3"))
-  {
-    KiA = server.arg("slider3").toInt();
-    server.send(200, "text/plain", "Mutable Value Set to: " + String(KiA));
-  }
-  else
-  {
-    server.send(400, "text/plain", "Missing 'value' parameter");
-  }
+// Function to handle the "/write" endpoint
+void handleWrite() {
+    if (server.hasArg("value")) {
+        mutableValue = server.arg("value").toInt();
+        server.send(200, "text/plain", "Value updated to: " + String(mutableValue));
+    } else {
+        server.send(400, "text/plain", "Missing 'value' parameter");
+    }
 }
 
-void wifiSetup()
-{
-  WiFi.begin(ssid, password);
-
-  // Wait until connected to Wi-Fi
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    delay(1000);
-    Serial.println("Connecting to WiFi...");
-  }
-
-  Serial.println("Connected to Wi-Fi");
-  Serial.print("IP Address: ");
-  Serial.println(WiFi.localIP());
-
-  // Define routes and handlers for HTTP requests
-  server.on("/read", handleRead);   // Endpoint to read constant value
-  server.on("/write", handleWrite); // Endpoint to write mutable value
-
-  Serial.println("mDNS responder started");
-  /*return index page which is stored in serverIndex */
-  server.on("/", HTTP_GET, []()
-            {
-    server.sendHeader("Connection", "close");
-    server.send(200, "text/html", loginIndex); });
-  server.on("/serverIndex", HTTP_GET, []()
-            {
-    server.sendHeader("Connection", "close");
-    server.send(200, "text/html", serverIndex); });
-  /*handling uploading firmware file */
-  server.on("/update", HTTP_POST, []()
-            {
-    server.sendHeader("Connection", "close");
-    server.send(200, "text/plain", (Update.hasError()) ? "FAIL" : "OK");
-    ESP.restart(); }, []()
-            {
-    HTTPUpload& upload = server.upload();
-    if (upload.status == UPLOAD_FILE_START) {
-      Serial.printf("Update: %s\n", upload.filename.c_str());
-      if (!Update.begin(UPDATE_SIZE_UNKNOWN)) { //start with max available size
-        Update.printError(Serial);
-      }
-    } else if (upload.status == UPLOAD_FILE_WRITE) {
-      /* flashing firmware to ESP*/
-      if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
-        Update.printError(Serial);
-      }
-    } else if (upload.status == UPLOAD_FILE_END) {
-      if (Update.end(true)) { //true to set the size to the current progress
-        Serial.printf("Update Success: %u\nRebooting...\n", upload.totalSize);
-      } else {
-        Update.printError(Serial);
-      }
-    } });
-
-
-  // Start the server
-  server.begin();
+// Function to initialize Wi-Fi
+void setupWiFi() {
+    Serial.print("Connecting to Wi-Fi...");
+    WiFi.begin(ssid, password);
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+    }
+    Serial.println("\nConnected to Wi-Fi. IP: " + WiFi.localIP().toString());
 }
 
-void wifiTask(void *parameter)
-{
-  for (;;)
-  {                                     // Infinite loop
-    server.handleClient();              // Handle incoming client requests
-    vTaskDelay(5 / portTICK_PERIOD_MS); // Non-blocking delay
-  }
+// Function to initialize OTA
+void setupOTA() {
+    ArduinoOTA.setPassword("ass");
+
+    ArduinoOTA.onStart([]() {
+        String type = ArduinoOTA.getCommand() == U_FLASH ? "sketch" : "filesystem";
+        Serial.println("Start updating " + type);
+    });
+
+    ArduinoOTA.onEnd([]() {
+        Serial.println("\nUpdate Complete");
+    });
+
+    ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
+        Serial.printf("Progress: %u%%\r", (progress / (total / 100)));
+    });
+
+    ArduinoOTA.onError([](ota_error_t error) {
+        Serial.printf("Error[%u]: ", error);
+        if (error == OTA_AUTH_ERROR) Serial.println("Authentication Failed");
+        else if (error == OTA_BEGIN_ERROR) Serial.println("Begin Failed");
+        else if (error == OTA_CONNECT_ERROR) Serial.println("Connect Failed");
+        else if (error == OTA_RECEIVE_ERROR) Serial.println("Receive Failed");
+        else if (error == OTA_END_ERROR) Serial.println("End Failed");
+    });
+
+    ArduinoOTA.begin();
+    Serial.println("OTA Ready");
+}
+
+void wifiSetup() {
+    Serial.begin(115200);
+
+    setupWiFi();  // Initialize Wi-Fi
+    setupOTA();   // Initialize OTA
+
+    // Define HTTP server endpoints
+    server.on("/read", handleRead);   // Endpoint to read the mutable value
+    server.on("/write", handleWrite); // Endpoint to write a new value
+
+    // Start the HTTP server
+    server.begin();
+    Serial.println("HTTP server started");
+}
+
+void wifiLoop() {
+    ArduinoOTA.handle(); // Handle OTA requests
+    server.handleClient(); // Handle HTTP server requests
 }

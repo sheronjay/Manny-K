@@ -1,10 +1,12 @@
 #pragma once
 
-void handleRead();
+// void handleRead();
 
 // Handler to write mutable value
-void handleWrite();
+// void handleWrite();
 
 void wifiSetup();
 
-void wifiTask(void *parameter);
+// void wifiTask(void *parameter);
+
+void wifiLoop();
