@@ -19,7 +19,15 @@
 
         socket.onmessage = function(event) {
             const outputDiv = document.getElementById('output');
-            outputDiv.innerHTML += `<p>${event.data}</p>`;
+            const newMessage = document.createElement('p');
+            newMessage.textContent = event.data;
+            outputDiv.appendChild(newMessage);
+
+            // Limit the number of messages displayed
+            const maxMessages = 10;
+            while (outputDiv.children.length > maxMessages) {
+            outputDiv.removeChild(outputDiv.firstChild);
+            }
         };
 
         socket.onclose = function(event) {
