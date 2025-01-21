@@ -29,7 +29,7 @@ void setup()
 
   // Create a FreeRTOS task for the WiFi loop
   xTaskCreate(
-      wifiTask,    // Task function
+      wifiLoop,    // Task function
       "WiFi Task", // Task name
       4096,        // Stack size (in bytes)
       NULL,        // Task parameters

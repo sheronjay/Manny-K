@@ -9,4 +9,4 @@ void wifiSetup();
 
 // void wifiTask(void *parameter);
 
-void wifiLoop();
+void wifiLoop(void *parameter);
