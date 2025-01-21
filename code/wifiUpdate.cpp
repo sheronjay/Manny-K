@@ -1,6 +1,7 @@
 #include <WiFi.h>
 #include <WebServer.h>
 #include <ArduinoOTA.h>
+#include "variablesAndParameters.h"
 #include "wifi_cred.h"
 #include "wifiUpdate.h"
 
@@ -9,24 +10,60 @@ WebServer server(80); // Create a web server on port 80
 // Global variable to store a mutable value
 int mutableValue = 0;
 
-// Function to handle the "/read" endpoint
+// Handler to read constant value
 void handleRead()
 {
-    server.send(200, "text/plain", String(mutableValue));
+    String message = "{";
+    message += "\"slider1\": " + String(KpA) + ",";
+    message += "\"slider2\": " + String(KdA) + ",";
+    message += "\"slider3\": " + String(KpA);
+    message += "}";
+    server.send(200, "text/plain", message);
 }
 
-// Function to handle the "/write" endpoint
+// Handler to write mutable value
 void handleWrite()
 {
-    if (server.hasArg("value"))
+    if (server.hasArg("slider1"))
     {
-        mutableValue = server.arg("value").toInt();
-        server.send(200, "text/plain", "Value updated to: " + String(mutableValue));
+        KpA = server.arg("slider1").toFloat();
+        server.send(200, "text/plain", "Mutable Value Set to: " + String(KpA));
+    }
+    else if (server.hasArg("slider2"))
+    {
+        KdA = server.arg("slider2").toFloat();
+        server.send(200, "text/plain", "Mutable Value Set to: " + String(KdA));
+    }
+    else if (server.hasArg("slider3"))
+    {
+        KiA = server.arg("slider3").toFloat();
+        server.send(200, "text/plain", "Mutable Value Set to: " + String(KiA));
     }
     else
     {
         server.send(400, "text/plain", "Missing 'value' parameter");
     }
+}
+
+void handleSerial()
+{
+    static String serialOutput = ""; // Buffer to store serial output
+    if (Serial.available())
+    {
+        char c = Serial.read();
+        serialOutput += c; // Append serial data to buffer
+        if (serialOutput.length() > 1024)
+        {
+            serialOutput.remove(0, serialOutput.length() - 1024); // Limit buffer size
+        }
+    }
+
+    String html = "<html><body>";
+    html += "<h1>ESP32 Serial Monitor</h1>";
+    html += "<pre>" + serialOutput + "</pre>";
+    html += "</body></html>";
+
+    server.send(200, "text/html", html);
 }
 
 // Function to initialize Wi-Fi
@@ -45,7 +82,7 @@ void setupWiFi()
 // Function to initialize OTA
 void setupOTA()
 {
-    ArduinoOTA.setPassword("ass");
+    ArduinoOTA.setPassword("mannyk");
 
     ArduinoOTA.onStart([]()
                        {
@@ -73,14 +110,13 @@ void setupOTA()
 
 void wifiSetup()
 {
-    Serial.begin(115200);
-
     setupWiFi(); // Initialize Wi-Fi
     setupOTA();  // Initialize OTA
 
     // Define HTTP server endpoints
     server.on("/read", handleRead);   // Endpoint to read the mutable value
     server.on("/write", handleWrite); // Endpoint to write a new value
+    server.on("/", handleSerial);     // Define a route for the root URL
 
     // Start the HTTP server
     server.begin();

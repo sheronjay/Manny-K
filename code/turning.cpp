@@ -6,8 +6,8 @@
 
 // Robot constants
 float l = 8.2; // Wheelbase length (cm)
-float r = 1.7;  // Wheel radius (cm)
-int ratio = 97*6; // Gear ratio
+float r = 1.6;  // Wheel radius (cm)
+int cpr = 350; // Counts per revolution at the output shaft
 
 
 float p;
@@ -61,7 +61,7 @@ void printConstants() {
 
 void turn(int ang) {
   // Calculate target counts for the given angle
-  float targetCounts = (abs(ang) * l * ratio) / (720 * r);
+  float targetCounts = (abs(ang) * l * cpr) / (720 * r);
   posL = 0;
   posR = 0;
 
