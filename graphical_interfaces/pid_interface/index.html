@@ -7,6 +7,10 @@
     <title>Slider Interface</title>
     <script>
 
+        const config = {
+            ipAddress: '192.168.8.114',
+        };
+
         let live = false;
 
         function updateValue(sliderId, inputId, value) {
@@ -18,7 +22,7 @@
         }
 
         function makeWebRequest(sliderId, value) {
-            fetch(`http://192.168.8.114:80/write?${sliderId}=${value}`, {
+            fetch(`http://${config.ipAddress}:80/write?${sliderId}=${value}`, {
                 method: 'GET',
                 mode: 'no-cors'
             })
@@ -28,7 +32,7 @@
         }
 
         function fetchValues() {
-            fetch('http://192.168.8.114:80/read', {
+            fetch(`http://${config.ipAddress}:80/read`, {
                 method: 'GET',
                 mode: 'no-cors'
             })
