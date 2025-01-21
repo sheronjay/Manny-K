@@ -1,5 +1,6 @@
 #include <WiFi.h>
 #include <WebServer.h>
+#include <ArduinoWebsockets.h>
 #include <ArduinoOTA.h>
 #include "variablesAndParameters.h"
 #include "wifi_cred.h"
@@ -7,8 +8,22 @@
 
 WebServer server(80); // Create a web server on port 80
 
-// Global variable to store a mutable value
-int mutableValue = 0;
+using namespace websockets;
+
+WebsocketsServer webSocket;
+WebsocketsClient client;
+
+void printSerialAndSend(char *message)
+{
+    if (Serial.available())
+    {
+        Serial.println(message);
+    }
+    if (client.available())
+    {
+        client.send(message);
+    }
+}
 
 // Handler to read constant value
 void handleRead()
@@ -27,43 +42,22 @@ void handleWrite()
     if (server.hasArg("slider1"))
     {
         KpA = server.arg("slider1").toFloat();
-        server.send(200, "text/plain", "Mutable Value Set to: " + String(KpA));
+        server.send(200, "text/plain", String(KpA));
     }
     else if (server.hasArg("slider2"))
     {
         KdA = server.arg("slider2").toFloat();
-        server.send(200, "text/plain", "Mutable Value Set to: " + String(KdA));
+        server.send(200, "text/plain", String(KdA));
     }
     else if (server.hasArg("slider3"))
     {
         KiA = server.arg("slider3").toFloat();
-        server.send(200, "text/plain", "Mutable Value Set to: " + String(KiA));
+        server.send(200, "text/plain", String(KiA));
     }
     else
     {
         server.send(400, "text/plain", "Missing 'value' parameter");
     }
-}
-
-void handleSerial()
-{
-    static String serialOutput = ""; // Buffer to store serial output
-    if (Serial.available())
-    {
-        char c = Serial.read();
-        serialOutput += c; // Append serial data to buffer
-        if (serialOutput.length() > 1024)
-        {
-            serialOutput.remove(0, serialOutput.length() - 1024); // Limit buffer size
-        }
-    }
-
-    String html = "<html><body>";
-    html += "<h1>ESP32 Serial Monitor</h1>";
-    html += "<pre>" + serialOutput + "</pre>";
-    html += "</body></html>";
-
-    server.send(200, "text/html", html);
 }
 
 // Function to initialize Wi-Fi
@@ -116,11 +110,13 @@ void wifiSetup()
     // Define HTTP server endpoints
     server.on("/read", handleRead);   // Endpoint to read the mutable value
     server.on("/write", handleWrite); // Endpoint to write a new value
-    server.on("/", handleSerial);     // Define a route for the root URL
 
     // Start the HTTP server
     server.begin();
     Serial.println("HTTP server started");
+
+    webSocket.listen(81); // Start WebSocket server
+    Serial.println("WebSocket server started. Connect to ws://" + WiFi.localIP().toString() + ":81");
 }
 
 void wifiLoop(void *parameter)
@@ -130,5 +126,11 @@ void wifiLoop(void *parameter)
         ArduinoOTA.handle();                  // Handle OTA requests
         server.handleClient();                // Handle HTTP server requests
         vTaskDelay(100 / portTICK_PERIOD_MS); // Non-blocking delay
+
+        if (!client.available())
+        {
+
+            client = webSocket.accept();
+        }
     }
 }
