@@ -34,12 +34,9 @@ void handleRead()
     doc["kiA"] = KiA;
     doc["kdA"] = KdA;
     doc["kpD"] = KpD;
-    doc["kiD"] = KiD;
     doc["kdD"] = KdD;
     doc["forward_threshold"] = forward_threshold;
     doc["side_threshold"] = side_threshold;
-    doc["side_threshold_error"] = side_threshold_error;
-    doc["K_singlewall_correction"] = K_singlewall_correction;
     doc["maze_width"] = maze_width;
     doc["car_width"] = car_width;
     doc["sensor_left"] = sensor_left;
@@ -76,12 +73,9 @@ void handleWrite(const WebsocketsMessage &message)
         KiA = doc["kiA"] | KiA;
         KdA = doc["kdA"] | KdA;
         KpD = doc["kpD"] | KpD;
-        KiD = doc["kiD"] | KiD;
         KdD = doc["kdD"] | KdD;
         forward_threshold = doc["forward_threshold"] | forward_threshold;
         side_threshold = doc["side_threshold"] | side_threshold;
-        side_threshold_error = doc["side_threshold_error"] | side_threshold_error;
-        K_singlewall_correction = doc["K_singlewall_correction"] | K_singlewall_correction;
         maze_width = doc["maze_width"] | maze_width;
         car_width = doc["car_width"] | car_width;
         sensor_left = doc["sensor_left"] | sensor_left;

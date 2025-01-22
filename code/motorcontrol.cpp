@@ -4,6 +4,7 @@
 #include "pins.h"
 #include "turning.h"
 #include "VL53L0X_Sensors.h"
+#include "wallFollow.h"
 
 // Function to control motor direction and speed
 void setMotor(int dir, int pwmVal, int pwm, int in1, int in2)
