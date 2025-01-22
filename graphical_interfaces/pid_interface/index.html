@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,21 +10,27 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
-        th, td {
+
+        th,
+        td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: center;
         }
+
         th {
             background-color: #f4f4f4;
         }
+
         input[type="number"] {
             width: 80px;
         }
+
         button {
             padding: 8px 12px;
             margin-top: 10px;
@@ -32,11 +39,15 @@
             border: none;
             cursor: pointer;
         }
+
         button:hover {
             background-color: #45a049;
         }
+
+        
     </style>
 </head>
+
 <body>
     <h1>ESP32 WebSocket Control Panel</h1>
     <p>Status: <span id="status">Disconnected</span></p>
@@ -70,10 +81,14 @@
         };
 
         ws.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            if (data.action === "read") {
-                currentValues = data;
-                renderTable(data);
+            try {
+                const data = JSON.parse(event.data);
+                if (data.action === "read") {
+                    currentValues = data;
+                    renderTable(data);
+                }
+            } catch (e) {
+                console.log("Error parsing JSON: ", e);
             }
         };
 
@@ -92,6 +107,19 @@
 
             Object.keys(values).forEach((key) => {
                 if (key === "action") return; // Skip 'action' field
+
+                if (key === "upload") {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${key}</td>
+                        <td id="input-${key}">${values[key]}</td>
+                        <td>
+                            <button onclick="uploadToggle('${key}')">Toggle</button>
+                        </td>
+                    `;
+                    valuesTable.appendChild(row);
+                    return;
+                }
 
                 const row = document.createElement("tr");
                 row.innerHTML = `
@@ -121,6 +149,16 @@
             }
         }
 
+        function uploadToggle(key) {
+            ws.send(JSON.stringify({
+                action: "write",
+                [key]: !currentValues[key]
+            }));
+
+            const inputElement = document.getElementById(`input-${key}`);
+            inputElement.textContent = !currentValues[key];
+        }
+
         // Update all values
         document.getElementById("updateAllButton").addEventListener("click", () => {
             const updates = { action: "write" };
@@ -145,4 +183,5 @@
         });
     </script>
 </body>
+
 </html>
