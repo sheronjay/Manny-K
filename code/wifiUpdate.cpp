@@ -14,7 +14,7 @@ WebsocketsClient client;
 // Function to send messages to Serial and WebSocket
 void printSerialAndSend(char *message)
 {
-    if (Serial.available())
+    if (Serial)
     {
         Serial.println(message);
     }
@@ -57,6 +57,7 @@ void handleRead()
 void handleWrite(const WebsocketsMessage &message)
 {
     String payload = message.data(); // Extract message content as a String
+    Serial.println("Received: " + payload);
     DynamicJsonDocument doc(1024);
     DeserializationError error = deserializeJson(doc, payload.c_str()); // Use payload for deserialization
 

@@ -40,7 +40,7 @@ void setup()
       NULL         // Task handle
   );
 
-  // printSerialAndSend("Setup done");
+  printSerialAndSend("Setup done");
 }
 
 void loop()

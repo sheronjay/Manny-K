@@ -52,6 +52,7 @@
         <tbody></tbody>
     </table>
     <button id="updateAllButton">Update All</button>
+    <button id="refreshButton">Refresh</button>
 
     <script>
         const ws = new WebSocket("ws://192.168.8.114:80");
@@ -136,6 +137,11 @@
             });
 
             ws.send(JSON.stringify(updates));
+        });
+
+        // Refresh button
+        document.getElementById("refreshButton").addEventListener("click", () => {
+            ws.send(JSON.stringify({ action: "read" }));
         });
     </script>
 </body>
