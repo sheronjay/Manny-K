@@ -2,6 +2,7 @@
 #include "motorcontrol.h"
 #include "variablesAndParameters.h"
 #include <Arduino.h>
+#include "pins.h"
 
 // Constants for the distance controller
 float previousError = 0;

@@ -12,7 +12,8 @@ VL53L0X_RangingMeasurementData_t measure_left;
 VL53L0X_RangingMeasurementData_t measure_front;
 VL53L0X_RangingMeasurementData_t measure_right;
 
-void initializeSensors() {
+void initializeSensors()
+{
   // Set XSHUT pins as OUTPUT
   pinMode(SHT_LEFT, OUTPUT);
   pinMode(SHT_FRONT, OUTPUT);
@@ -34,39 +35,49 @@ void initializeSensors() {
   digitalWrite(SHT_LEFT, HIGH);
   digitalWrite(SHT_FRONT, LOW);
   digitalWrite(SHT_RIGHT, LOW);
-  
-  if (!left.begin(LEFT_ADDRESS)) {
+
+  if (!left.begin(LEFT_ADDRESS))
+  {
     Serial.println(F("Failed to initialize LEFT sensor"));
-    while (1);
+    while (1)
+      ;
   }
   delay(10);
 
   // Initialize FRONT sensor
   digitalWrite(SHT_FRONT, HIGH);
-  if (!front.begin(FRONT_ADDRESS)) {
+  if (!front.begin(FRONT_ADDRESS))
+  {
     Serial.println(F("Failed to initialize FRONT sensor"));
-    while (1);
+    while (1)
+      ;
   }
   delay(10);
 
   // Initialize RIGHT sensor
   digitalWrite(SHT_RIGHT, HIGH);
-  if (!right.begin(RIGHT_ADDRESS)) {
+  if (!right.begin(RIGHT_ADDRESS))
+  {
     Serial.println(F("Failed to initialize RIGHT sensor"));
-    while (1);
+    while (1)
+      ;
   }
   delay(10);
 }
 
-void readThreeSensors() {
+void readThreeSensors()
+{
   // Read LEFT sensor
   left.rangingTest(&measure_left, false);
   Serial.print("Left: ");
-  if (measure_left.RangeStatus != 4) {
+  if (measure_left.RangeStatus != 4)
+  {
     sensor_left = measure_left.RangeMilliMeter;
     Serial.print(measure_left.RangeMilliMeter);
     Serial.print("mm");
-  } else {
+  }
+  else
+  {
     Serial.print("Out of range");
     sensor_left = 600;
   }
@@ -76,11 +87,14 @@ void readThreeSensors() {
   // Read FRONT sensor
   front.rangingTest(&measure_front, false);
   Serial.print("Front: ");
-  if (measure_front.RangeStatus != 4) {
+  if (measure_front.RangeStatus != 4)
+  {
     sensor_front = measure_front.RangeMilliMeter;
     Serial.print(measure_front.RangeMilliMeter);
     Serial.print("mm");
-  } else {
+  }
+  else
+  {
     Serial.print("Out of range");
     sensor_front = 800;
   }
@@ -90,11 +104,14 @@ void readThreeSensors() {
   // Read RIGHT sensor
   right.rangingTest(&measure_right, false);
   Serial.print("Right: ");
-  if (measure_right.RangeStatus != 4) {
+  if (measure_right.RangeStatus != 4)
+  {
     sensor_right = measure_right.RangeMilliMeter;
     Serial.print(measure_right.RangeMilliMeter);
     Serial.print("mm");
-  } else {
+  }
+  else
+  {
     Serial.print("Out of range");
     sensor_right = 600;
   }
