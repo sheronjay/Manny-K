@@ -46,7 +46,7 @@ void handleRead()
     doc["sensor_front"] = sensor_front;
     doc["sensor_right"] = sensor_right;
     doc["encoder_counts"] = encoder_counts;
-    doc["cell_size"] = cell_size;
+    doc["encoder_counts_per_cell"] = encoder_counts_per_cell;
     doc["posL"] = posL;
     doc["posR"] = posR;
     doc["upload"] = upload;
@@ -88,7 +88,7 @@ void handleWrite(const WebsocketsMessage &message)
         sensor_front = doc["sensor_front"] | sensor_front;
         sensor_right = doc["sensor_right"] | sensor_right;
         encoder_counts = doc["encoder_counts"] | encoder_counts;
-        cell_size = doc["cell_size"] | cell_size;
+        encoder_counts_per_cell = doc["encoder_counts_per_cell"] | encoder_counts_per_cell;
         posL = doc["posL"] | posL;
         posR = doc["posR"] | posR;
         upload = doc["upload"] | upload;

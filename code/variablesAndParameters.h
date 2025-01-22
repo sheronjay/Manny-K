@@ -17,7 +17,7 @@ extern float sensor_right;
 
 // run algorithm at encoder counts
 extern int encoder_counts;  // this is used to call the algorithm at each new cell
-extern int cell_size; // size of each cell wrt encoder counts
+extern int encoder_counts_per_cell; // size of each cell wrt encoder counts
 
 
 // encoder values
@@ -37,3 +37,5 @@ extern float KdL; // Derivative gain for left distance controller
 extern float KpA; // Proportional gain for angle controller
 extern float KiA; // Integral gain for angle controller
 extern float KdA; // Derivative gain for angle controller
+
+extern int motorSpeed; // base motor speed for motor control

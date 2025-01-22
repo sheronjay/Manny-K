@@ -9,7 +9,6 @@ float previousError = 0;
 float previousLeftError = 0;
 float previousRightError = 0;
 int pwmValue = 0;
-int motorSpeed = 80;
 
 void wallFollowPidControl(float sensor_left, float sensor_right)
 {
