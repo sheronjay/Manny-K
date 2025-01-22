@@ -2,20 +2,19 @@
 #include <WebServer.h>
 #include <ArduinoWebsockets.h>
 #include <ArduinoOTA.h>
-#include "variablesAndParameters.h"
+#include <ArduinoJson.h>
 #include "wifi_cred.h"
-#include "wifiUpdate.h"
-
-WebServer server(80); // Create a web server on port 80
+#include "variablesAndParameters.h"
 
 using namespace websockets;
 
 WebsocketsServer webSocket;
 WebsocketsClient client;
 
-void printSerialAndSend(char *message)
+// Function to send messages to Serial and WebSocket
+void printSerialAndSend(const char *message)
 {
-    if (Serial.available())
+    if (Serial)
     {
         Serial.println(message);
     }
@@ -25,38 +24,77 @@ void printSerialAndSend(char *message)
     }
 }
 
-// Handler to read constant value
+// Send JSON data for `read` action
 void handleRead()
 {
-    String message = "{";
-    message += "\"p\": " + String(KpA) + ",";
-    message += "\"d\": " + String(KdA) + ",";
-    message += "\"i\": " + String(KiA);
-    message += "}";
-    server.send(200, "text/plain", message);
+    DynamicJsonDocument doc(1024);
+    doc["action"] = "read";
+
+    doc["kpA"] = KpA;
+    doc["kiA"] = KiA;
+    doc["kdA"] = KdA;
+    doc["kpD"] = KpD;
+    doc["kiD"] = KiD;
+    doc["kdD"] = KdD;
+    doc["forward_threshold"] = forward_threshold;
+    doc["side_threshold"] = side_threshold;
+    doc["side_threshold_error"] = side_threshold_error;
+    doc["K_singlewall_correction"] = K_singlewall_correction;
+    doc["maze_width"] = maze_width;
+    doc["car_width"] = car_width;
+    doc["sensor_left"] = sensor_left;
+    doc["sensor_front"] = sensor_front;
+    doc["sensor_right"] = sensor_right;
+    doc["encoder_counts"] = encoder_counts;
+    doc["cell_size"] = cell_size;
+    doc["posL"] = posL;
+    doc["posR"] = posR;
+
+    String response;
+    serializeJson(doc, response);
+    client.send(response);
 }
 
-// Handler to write mutable value
-void handleWrite()
+// Handle incoming WebSocket messages
+void handleWrite(const WebsocketsMessage &message)
 {
-    if (server.hasArg("slider1"))
+    String payload = message.data(); // Extract message content as a String
+    DynamicJsonDocument doc(1024);
+    DeserializationError error = deserializeJson(doc, payload.c_str()); // Use payload for deserialization
+
+    if (error)
     {
-        KpA = server.arg("slider1").toFloat();
-        server.send(200, "text/plain", String(KpA));
+        Serial.println("Failed to parse JSON");
+        Serial.println(error.c_str());
+        return;
     }
-    else if (server.hasArg("slider2"))
+
+    const char *action = doc["action"];
+    if (strcmp(action, "write") == 0)
     {
-        KdA = server.arg("slider2").toFloat();
-        server.send(200, "text/plain", String(KdA));
+        KpA = doc["kpA"] | KpA;
+        KiA = doc["kiA"] | KiA;
+        KdA = doc["kdA"] | KdA;
+        KpD = doc["kpD"] | KpD;
+        KiD = doc["kiD"] | KiD;
+        KdD = doc["kdD"] | KdD;
+        forward_threshold = doc["forward_threshold"] | forward_threshold;
+        side_threshold = doc["side_threshold"] | side_threshold;
+        side_threshold_error = doc["side_threshold_error"] | side_threshold_error;
+        K_singlewall_correction = doc["K_singlewall_correction"] | K_singlewall_correction;
+        maze_width = doc["maze_width"] | maze_width;
+        car_width = doc["car_width"] | car_width;
+        sensor_left = doc["sensor_left"] | sensor_left;
+        sensor_front = doc["sensor_front"] | sensor_front;
+        sensor_right = doc["sensor_right"] | sensor_right;
+        encoder_counts = doc["encoder_counts"] | encoder_counts;
+        cell_size = doc["cell_size"] | cell_size;
+        posL = doc["posL"] | posL;
+        posR = doc["posR"] | posR;
     }
-    else if (server.hasArg("slider3"))
+    else if (strcmp(action, "read") == 0)
     {
-        KiA = server.arg("slider3").toFloat();
-        server.send(200, "text/plain", String(KiA));
-    }
-    else
-    {
-        server.send(400, "text/plain", "Missing 'value' parameter");
+        handleRead();
     }
 }
 
@@ -107,30 +145,26 @@ void wifiSetup()
     setupWiFi(); // Initialize Wi-Fi
     setupOTA();  // Initialize OTA
 
-    // Define HTTP server endpoints
-    server.on("/read", handleRead);   // Endpoint to read the mutable value
-    server.on("/write", handleWrite); // Endpoint to write a new value
-
-    // Start the HTTP server
-    server.begin();
-    Serial.println("HTTP server started");
-
-    webSocket.listen(81); // Start WebSocket server
-    Serial.println("WebSocket server started. Connect to ws://" + WiFi.localIP().toString() + ":81");
+    webSocket.listen(80); // Start WebSocket server
+    Serial.println("WebSocket server started. Connect to ws://" + WiFi.localIP().toString() + ":80");
 }
 
 void wifiLoop(void *parameter)
 {
     for (;;)
-    {                                         // Infinite loop
-        ArduinoOTA.handle();                  // Handle OTA requests
-        server.handleClient();                // Handle HTTP server requests
-        vTaskDelay(100 / portTICK_PERIOD_MS); // Non-blocking delay
+    {                        // Infinite loop
+        ArduinoOTA.handle(); // Handle OTA requests
 
         if (!client.available())
         {
-
             client = webSocket.accept();
         }
+        else
+        {
+            client.poll();
+            auto message = client.readBlocking();
+            handleWrite(message);
+        }
+        vTaskDelay(100 / portTICK_PERIOD_MS); // Non-blocking delay
     }
 }
