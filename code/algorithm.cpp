@@ -117,11 +117,6 @@ void updateWalls() {
     }
 }
 
-void algorithmSetup() {
-    currentPos = {0, 0};
-    orient = 0;
-}
-
 void moveToNextCell(const std::tuple<int, int, int>& next) {
     auto [nextX, nextY, direction] = next;
     
@@ -144,6 +139,11 @@ void moveToNextCell(const std::tuple<int, int, int>& next) {
     moveForward();
     orient = direction;
     currentPos = {nextX, nextY};
+}
+
+void algorithmSetup() {
+    currentPos = {0, 0};
+    orient = 0;
 }
 
 void algorithmLoop() {

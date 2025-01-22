@@ -40,21 +40,6 @@ void setup()
 
 void loop()
 {
-  // Updates the sensor_left, right, and front variables
-  // readThreeSensors();
-  // wallFollowPidControl(sensor_left, sensor_right, sensor_front);
-
-  delay(3000);
-  turnLeft();
-  delay(3000);
-  turnRight();
-  delay(3000);
-  turnBack();
-  delay(3000);
-
-  // if (encoder_counts >= cell_size)
-  // {
-  //   algorithmLoop();
-  //   encoder_counts = 0;
-  // }
+  readThreeSensors();
+  algorithmLoop();
 }

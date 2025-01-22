@@ -5,46 +5,18 @@
 
 // Constants for the distance controller
 float previousError = 0;
-float integral = 0;
+float previousLeftError = 0;
+float previousRightError = 0;
 int pwmValue = 0;
 int motorSpeed = 80;
 
-void wallFollowPidControl(float sensor_left, float sensor_right, float sensor_front)
+void wallFollowPidControl(float sensor_left, float sensor_right)
 {
-  // Calculate error: difference between left and right sensors
-  float error;
-
-  // both walls missing
-  if (sensor_left > (side_threshold + side_threshold_error) && sensor_right > (side_threshold + side_threshold_error))
-  {
-    error = 0;
-  }
-
-  // follow right wall
-  else if (sensor_left > (side_threshold + side_threshold_error))
-  {
-    error = (maze_width - car_width - 2 * sensor_right) * K_singlewall_correction;
-    // error = 0;
-  }
-
-  // follow left wall
-  else if (sensor_right > (side_threshold + side_threshold_error))
-  {
-    error = (-maze_width + car_width + 2 * sensor_left) * K_singlewall_correction;
-    // error = 0;
-  }
-
-  else
-  {
-
-    error = sensor_left - sensor_right;
-  }
-
-  integral += error;
+  float error = sensor_left - sensor_right;
   float derivative = error - previousError;
 
   // Calculate PID output
-  pwmValue = KpD * error + KiD * integral + KdD * derivative;
+  pwmValue = KpD * error + KdD * derivative;
   Serial.println(pwmValue);
 
   // Apply the PID correction to motors
@@ -53,4 +25,35 @@ void wallFollowPidControl(float sensor_left, float sensor_right, float sensor_fr
 
   // Update previous error for the next cycle
   previousError = error;
+}
+
+void leftWallFollowPidControl(float sensor_left) {
+  float error = dist_to_single_wall - sensor_left;
+  float derivative = error - previousLeftError;
+
+  // Calculate PID output
+  pwmValue = KpD * error + KdD * derivative;
+  Serial.println(pwmValue);
+
+  // Apply the PID correction to motors
+  setMotor(1, motorSpeed - pwmValue, PWML, IN1L, IN2L);
+  setMotor(1, motorSpeed + pwmValue, PWMR, IN1R, IN2R);
+
+  // Update previous error for the next cycle
+  previousLeftError = error;
+}
+void rightWallFollowPidControl(float sensor_right) {
+  float error = dist_to_single_wall - sensor_right;
+  float derivative = error - previousRightError;
+
+  // Calculate PID output
+  pwmValue = KpD * error + KdD * derivative;
+  Serial.println(pwmValue);
+
+  // Apply the PID correction to motors
+  setMotor(1, motorSpeed - pwmValue, PWML, IN1L, IN2L);
+  setMotor(1, motorSpeed + pwmValue, PWMR, IN1R, IN2R);
+
+  // Update previous error for the next cycle
+  previousRightError = error;
 }
