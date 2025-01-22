@@ -1,100 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slider Interface</title>
+    <title>WebSocket Interface</title>
+    <style>
+        .item {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>WebSocket Interface</h1>
+    <div id="items"></div>
     <script>
+        const ws = new WebSocket('ws://192.168.8.114:80');
 
-        const config = {
-            ipAddress: '192.168.8.114',
+        ws.onopen = () => {
+            console.log('WebSocket is connected');
+            ws.send(JSON.stringify({ action: 'read' }));
         };
 
-        let live = false;
-
-        function updateValue(sliderId, inputId, value) {
-            if (live) {
-                makeWebRequest(sliderId, value);
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.action === 'read') {
+                displayItems(data.items);
             }
-            document.getElementById(sliderId).value = value;
-            document.getElementById(inputId).value = value;
+        };
+
+        function displayItems(items) {
+            const itemsContainer = document.getElementById('items');
+            itemsContainer.innerHTML = '';
+            items.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'item';
+                itemDiv.innerHTML = `
+                    <label for="item-${index}">${item.name}: </label>
+                    <input type="number" id="item-${index}" value="${item.value}" step="0.01">
+                    <button onclick="updateItem(${index})">Update</button>
+                `;
+                itemsContainer.appendChild(itemDiv);
+            });
         }
 
-        function makeWebRequest(sliderId, value) {
-            fetch(`http://${config.ipAddress}:80/write?${sliderId}=${value}`, {
-                method: 'GET',
-                mode: 'no-cors'
-            })
-                .then(response => response.json())
-                .then(data => console.log(data))
-                .catch(error => console.error('Error:', error));
+        function updateItem(index) {
+            const input = document.getElementById(`item-${index}`);
+            const value = parseFloat(input.value);
+            ws.send(JSON.stringify({ action: 'write', index: index, value: value }));
         }
-
-        function fetchValues() {
-            fetch(`http://${config.ipAddress}:80/read`, {
-                method: 'GET',
-                mode: 'no-cors'
-            })
-                .then(response => response.text())
-                .then(data => {
-                    updateValue('slider1', 'input1', data.slider1);
-                    updateValue('slider2', 'input2', data.slider2);
-                    updateValue('slider3', 'input3', data.slider3);
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        function togleLive() {
-            live = !live;
-
-            if (live) {
-                document.getElementById('liveButton').innerText = 'Stop Live';
-            } else {
-                document.getElementById('liveButton').innerText = 'Go Live';
-            }
-        }
-
-        function updateAllValues() {
-            makeWebRequest('slider1', document.getElementById('input1').value);
-            makeWebRequest('slider2', document.getElementById('input2').value);
-            makeWebRequest('slider3', document.getElementById('input3').value);
-        }
-
-        // window.onload = fetchValues;
-
-
-
     </script>
-</head>
-
-<body>
-    <div>
-        <button onclick="fetchValues()">Refresh</button>
-        <button id="liveButton" onclick="togleLive()">Go Live</button>
-        <button onclick="updateAllValues()">Update</button>
-    </div>
-    <div>
-        <label for="slider1">p:</label>
-        <input type="range" id="slider1" min="0" max="5" step="0.01" value="1"
-            oninput="updateValue('slider1', 'input1', this.value)">
-        <input type="number" id="input1" min="0" max="5" step="0.01" value="1"
-            oninput="updateValue('slider1', 'input1', this.value)">
-    </div>
-    <div>
-        <label for="slider2">d:</label>
-        <input type="range" id="slider2" min="0" max="5" step="0.01" value="0"
-            oninput="updateValue('slider2', 'input2', this.value)">
-        <input type="number" id="input2" min="0" max="5" step="0.01" value="0"
-            oninput="updateValue('slider2', 'input2', this.value)">
-    </div>
-    <div>
-        <label for="slider3">i:</label>
-        <input type="range" id="slider3" min="0" max="5" step="0.01" value="0"
-            oninput="updateValue('slider3', 'input3', this.value)">
-        <input type="float" id="input3" min="0" max="5" step="0.01" value="0"
-            oninput="updateValue('slider3', 'input3', this.value)">
-    </div>
 </body>
-
 </html>
