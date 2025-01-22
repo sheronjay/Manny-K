@@ -11,6 +11,8 @@ using namespace websockets;
 WebsocketsServer webSocket;
 WebsocketsClient client;
 
+bool upload = false;
+
 // Function to send messages to Serial and WebSocket
 void printSerialAndSend(char *message)
 {
@@ -47,6 +49,7 @@ void handleRead()
     doc["cell_size"] = cell_size;
     doc["posL"] = posL;
     doc["posR"] = posR;
+    doc["upload"] = upload;
 
     String response;
     serializeJson(doc, response);
@@ -88,6 +91,7 @@ void handleWrite(const WebsocketsMessage &message)
         cell_size = doc["cell_size"] | cell_size;
         posL = doc["posL"] | posL;
         posR = doc["posR"] | posR;
+        upload = doc["upload"] | upload;
     }
     else if (strcmp(action, "read") == 0)
     {
@@ -149,19 +153,31 @@ void wifiSetup()
 void wifiLoop(void *parameter)
 {
     for (;;)
-    {                        // Infinite loop
-        ArduinoOTA.handle(); // Handle OTA requests
-
-        if (!client.available())
+    {
+        // Infinite loop
+        if (!client.available() && !upload)
         {
             client = webSocket.accept();
+            Serial.println("Client connected");
         }
-        else
+        else if (!upload)
         {
             client.poll();
             auto message = client.readBlocking();
             handleWrite(message);
+            Serial.println("Message received");
         }
+
+        else if (upload)
+        {
+            if (client.available())
+            {
+                client.close();
+                Serial.println("closed");
+            }
+            ArduinoOTA.handle(); // Handle OTA requests
+        }
+
         vTaskDelay(100 / portTICK_PERIOD_MS); // Non-blocking delay
     }
 }
