@@ -19,8 +19,8 @@ fi
 
 # Compile the sketch
 echo "Compiling sketch..."
-arduino-cli compile --fqbn $FQBN $SKETCH_PATH
-# arduino-cli compile --fqbn $FQBN --clean $SKETCH_PATH
+# arduino-cli compile --fqbn $FQBN $SKETCH_PATH
+arduino-cli compile --fqbn $FQBN --clean $SKETCH_PATH
 if [ $? -ne 0 ]; then
     echo "Compilation failed."
     exit 1

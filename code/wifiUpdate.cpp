@@ -12,9 +12,9 @@ WebsocketsServer webSocket;
 WebsocketsClient client;
 
 // Function to send messages to Serial and WebSocket
-void printSerialAndSend(const char *message)
+void printSerialAndSend(char *message)
 {
-    if (Serial)
+    if (Serial.available())
     {
         Serial.println(message);
     }
@@ -27,6 +27,7 @@ void printSerialAndSend(const char *message)
 // Send JSON data for `read` action
 void handleRead()
 {
+    Serial.println("Sending data to client");
     DynamicJsonDocument doc(1024);
     doc["action"] = "read";
 
@@ -67,6 +68,7 @@ void handleWrite(const WebsocketsMessage &message)
     }
 
     const char *action = doc["action"];
+    Serial.println(action);
     if (strcmp(action, "write") == 0)
     {
         KpA = doc["kpA"] | KpA;
