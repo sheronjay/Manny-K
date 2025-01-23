@@ -210,11 +210,13 @@ def main():
             API.turnLeft()
             API.turnLeft()
             API.moveForward()
-            match orient:
+            """ match orient:
                 case 0: orient = 2
                 case 1: orient = 3
                 case 2: orient = 0
-                case 3: orient = 1
+                case 3: orient = 1 """
+                
+            orient = (orient + 2) % 4
 
             print("Done turning back")
 

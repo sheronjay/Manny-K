@@ -12,7 +12,7 @@
 #define ENCBR 19
 #define PWMR 8
 #define IN1R 9
-#define IN2R 10
+#define IN2R 10 
 
 
 // Function prototypes
