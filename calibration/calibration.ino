@@ -26,59 +26,92 @@ int readIndex = 0;          // Index of the current reading
 int total = 0;              // Sum of readings
 int distance;
 
+void setID()
+{
+  // Reset all sensors
+  digitalWrite(SHT_LEFT, LOW);
+  digitalWrite(SHT_FRONT, LOW);
+  digitalWrite(SHT_RIGHT, LOW);
+  delay(10);
+
+  // Unreset all sensors
+  digitalWrite(SHT_LEFT, HIGH);
+  digitalWrite(SHT_FRONT, HIGH);
+  digitalWrite(SHT_RIGHT, HIGH);
+  delay(10);
+
+  // Activate LEFT and reset others
+  digitalWrite(SHT_LEFT, HIGH);
+  digitalWrite(SHT_FRONT, LOW);
+  digitalWrite(SHT_RIGHT, LOW);
+
+  // Initialize left sensors
+  if (!left.begin(LEFT_ADDRESS))
+  {
+    Serial.println(F("Failed to boot left VL53L0X"));
+    while (1)
+      ;
+  }
+  delay(10);
+
+  // Activate FRONT and reset others
+  digitalWrite(SHT_FRONT, HIGH);
+  digitalWrite(SHT_RIGHT, LOW);
+
+  // Initialize FRONT
+  if (!front.begin(FRONT_ADDRESS))
+  {
+    Serial.println(F("Failed to boot front VL53L0X"));
+    while (1)
+      ;
+  }
+  delay(10);
+
+  // Activate RIGHT
+  digitalWrite(SHT_RIGHT, HIGH);
+  delay(10);
+
+  // initialize RIGHT
+  if (!right.begin(RIGHT_ADDRESS))
+  {
+    Serial.println(F("Failed to boot right VL53L0X"));
+    while (1)
+      ;
+  }
+}
+
 void setup()
 {
+  Serial.begin(115200);
 
-  Serial.begin(115200); // Initialize serial communication for debugging
-  Serial.println("VL53L0X Distance Sensor Setup");
+  while (!Serial)
+  {
+    delay(1);
+  }
 
   pinMode(SHT_LEFT, OUTPUT);
   pinMode(SHT_FRONT, OUTPUT);
   pinMode(SHT_RIGHT, OUTPUT);
-  Serial.println("XSHUT pins set as OUTPUT");
 
-  delay(2000);
-  // // Reset all sensors
-  // digitalWrite(SHT_LEFT, LOW);
-  // digitalWrite(SHT_FRONT, LOW);
-  // digitalWrite(SHT_RIGHT, LOW);
-  // delay(10);
+  Serial.println("Shutdown pins inited...");
 
-  // // Bring out of reset all sensors
-  // digitalWrite(SHT_LEFT, HIGH);
-  // digitalWrite(SHT_FRONT, HIGH);
-  // digitalWrite(SHT_RIGHT, HIGH);
-  // delay(10);
+  digitalWrite(SHT_LEFT, LOW);
+  digitalWrite(SHT_FRONT, LOW);
+  digitalWrite(SHT_RIGHT, LOW);
 
-  // // Initialize LEFT sensor
-  // digitalWrite(SHT_LEFT, HIGH);
-  // digitalWrite(SHT_FRONT, LOW);
-  // digitalWrite(SHT_RIGHT, LOW);
+  Serial.println("All sensors in reset mode...(pins are low)");
 
-  if (!left.begin(LEFT_ADDRESS))
-  {
-    Serial.println(F("Failed to initialize LEFT sensor"));
-    while (1)
-      ;
-  }
+  Serial.println("Starting...");
+  // SetID function is responsible for assigning addresses to each sensor
+  setID();
 
-  if (!right.begin(RIGHT_ADDRESS))
-  {
-    Serial.println(F("Failed to initialize LEFT sensor"));
-    while (1)
-      ;
-  }
-  if (!front.begin(FRONT_ADDRESS))
-  {
-    Serial.println(F("Failed to initialize LEFT sensor"));
-    while (1)
-      ;
-  }
-  delay(2000);
+  Serial.println("SetID function called...");
 
   left.setMeasurementTimingBudgetMicroSeconds(200000);
   front.setMeasurementTimingBudgetMicroSeconds(200000);
   right.setMeasurementTimingBudgetMicroSeconds(200000);
+
+  Serial.println("Measurement timing budget set to 200000...");
 }
 
 void loop()
