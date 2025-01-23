@@ -63,6 +63,15 @@ void initializeSensors()
       ;
   }
   delay(10);
+
+  // left.configSensor(Adafruit_VL53L0X::VL53L0X_SENSE_HIGH_ACCURACY);
+  // right.configSensor(Adafruit_VL53L0X::VL53L0X_SENSE_HIGH_ACCURACY);
+  // front.configSensor(Adafruit_VL53L0X::VL53L0X_SENSE_HIGH_ACCURACY);
+
+  // left.setMeasurementTimingBudgetMicroSeconds(200);
+  // right.setMeasurementTimingBudgetMicroSeconds(200);
+  // front.setMeasurementTimingBudgetMicroSeconds(200);
+
 }
 
 void readThreeSensors()
