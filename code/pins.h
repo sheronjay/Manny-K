@@ -9,7 +9,7 @@
 // Defining the input pins for the motor
 #define PWML 0
 #define IN1L 2
-#define IN2L 15
+#define IN2L 13
 
 // Defining the input pins for the motor
 #define PWMR 4

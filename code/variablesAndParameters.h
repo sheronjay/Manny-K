@@ -2,28 +2,24 @@
 
 // Thresholds for the sensors and PID constants
 extern int forward_threshold; // Threshold for the front sensor to detect end of the path
-extern int side_threshold; // Threshold for the side sensors to detect a wall
+extern int side_threshold;    // Threshold for the side sensors to detect a wall
 extern int dist_to_single_wall;
 
 extern int maze_width; // Width of the maze in mm
-extern int car_width; // Width of the car in mm
-
+extern int car_width;  // Width of the car in mm
 
 // sensor readings
 extern float sensor_left;
 extern float sensor_front;
 extern float sensor_right;
 
-
 // run algorithm at encoder counts
-extern int encoder_counts;  // this is used to call the algorithm at each new cell
+extern int encoder_counts;          // this is used to call the algorithm at each new cell
 extern int encoder_counts_per_cell; // size of each cell wrt encoder counts
-
 
 // encoder values
 extern int posL; // Encoder position for left motor
 extern int posR; // Encoder position for right motor
-
 
 extern float KpD; // Proportional gain for distance controller
 extern float KdD; // Derivative gain for distance controller
@@ -39,3 +35,9 @@ extern float KiA; // Integral gain for angle controller
 extern float KdA; // Derivative gain for angle controller
 
 extern int motorSpeed; // base motor speed for motor control
+
+// Constants for the distance controller
+extern float previousError;
+extern float previousLeftError;
+extern float previousRightError;
+extern int pwmValue;

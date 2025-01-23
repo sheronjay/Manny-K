@@ -4,12 +4,6 @@
 #include <Arduino.h>
 #include "pins.h"
 
-// Constants for the distance controller
-float previousError = 0;
-float previousLeftError = 0;
-float previousRightError = 0;
-int pwmValue = 0;
-
 void wallFollowPidControl(float sensor_left, float sensor_right)
 {
   float error = sensor_left - sensor_right;
