@@ -14,7 +14,7 @@ WebsocketsClient client;
 bool upload = false;
 
 // Function to send messages to Serial and WebSocket
-void printSerialAndSend(char *message)
+void printSerialAndSend(const String message)
 {
     if (Serial)
     {
@@ -22,7 +22,7 @@ void printSerialAndSend(char *message)
     }
     if (client.available())
     {
-        client.send(message);
+        client.send(String(message));
     }
 }
 

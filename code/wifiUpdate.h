@@ -1,10 +1,11 @@
 #pragma once
+#include <Print.h>
 
 // void handleRead();
 
 // Handler to write mutable value
 // void handleWrite();
-void printSerialAndSend(char *message);
+void printSerialAndSend(const String message);
 
 void wifiSetup();
 
