@@ -43,14 +43,15 @@
         button:hover {
             background-color: #45a049;
         }
-
-        
     </style>
 </head>
 
 <body>
     <h1>ESP32 WebSocket Control Panel</h1>
     <p>Status: <span id="status">Disconnected</span></p>
+
+    <div id="messageDialog">
+    </div>
 
     <table id="valuesTable">
         <thead>
@@ -87,8 +88,20 @@
                     currentValues = data;
                     renderTable(data);
                 }
+
+
             } catch (e) {
-                console.log("Error parsing JSON: ", e);
+                const outputDiv = document.getElementById('messageDialog');
+                const newMessage = document.createElement('p');
+                newMessage.textContent = event.data;
+                outputDiv.appendChild(newMessage);
+
+                // Limit the number of messages displayed
+                const maxMessages = 6;
+                while (outputDiv.children.length > maxMessages) {
+                    outputDiv.removeChild(outputDiv.firstChild);
+                }
+                console.log("Error parsing JSON: ", event.data);
             }
         };
 
