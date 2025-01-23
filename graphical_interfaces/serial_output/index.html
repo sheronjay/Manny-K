@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Listener</title>
+</head>
+<body>
+    <h1>WebSocket Listener</h1>
+    <div id="output"></div>
+
+    <script>
+        // import config from '../config.js';
+        const socket = new WebSocket('ws://' + '192.168.8.114' + ':80');
+
+        socket.onopen = function(event) {
+            console.log('WebSocket is open now.');
+        };
+
+        socket.onmessage = function(event) {
+            const outputDiv = document.getElementById('output');
+            const newMessage = document.createElement('p');
+            newMessage.textContent = event.data;
+            outputDiv.appendChild(newMessage);
+
+            // Limit the number of messages displayed
+            const maxMessages = 10;
+            while (outputDiv.children.length > maxMessages) {
+            outputDiv.removeChild(outputDiv.firstChild);
+            }
+        };
+
+        socket.onclose = function(event) {
+            console.log('WebSocket is closed now.');
+        };
+
+        socket.onerror = function(error) {
+            console.log('WebSocket error: ' + error);
+        };
+    </script>
+</body>
+</html>

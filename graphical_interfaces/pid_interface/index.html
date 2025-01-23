@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 WebSocket Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        input[type="number"] {
+            width: 80px;
+        }
+
+        button {
+            padding: 8px 12px;
+            margin-top: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        
+    </style>
+</head>
+
+<body>
+    <h1>ESP32 WebSocket Control Panel</h1>
+    <p>Status: <span id="status">Disconnected</span></p>
+
+    <table id="valuesTable">
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+                <th>Update</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <button id="updateAllButton">Update All</button>
+    <button id="refreshButton">Refresh</button>
+
+    <script>
+        const ws = new WebSocket("ws://192.168.8.114:80");
+        const statusElement = document.getElementById("status");
+        const valuesTable = document.getElementById("valuesTable").querySelector("tbody");
+
+        let currentValues = {};
+
+        // WebSocket events
+        ws.onopen = () => {
+            statusElement.textContent = "Connected";
+            statusElement.style.color = "green";
+            // Request current values
+            ws.send(JSON.stringify({ action: "read" }));
+        };
+
+        ws.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                if (data.action === "read") {
+                    currentValues = data;
+                    renderTable(data);
+                }
+            } catch (e) {
+                console.log("Error parsing JSON: ", e);
+            }
+        };
+
+        ws.onclose = () => {
+            statusElement.textContent = "Disconnected";
+            statusElement.style.color = "red";
+        };
+
+        ws.onerror = (error) => {
+            console.error("WebSocket Error: ", error);
+        };
+
+        // Render table
+        function renderTable(values) {
+            valuesTable.innerHTML = ""; // Clear existing rows
+
+            Object.keys(values).forEach((key) => {
+                if (key === "action") return; // Skip 'action' field
+
+                if (key === "upload") {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${key}</td>
+                        <td id="input-${key}">${values[key]}</td>
+                        <td>
+                            <button onclick="uploadToggle('${key}')">Toggle</button>
+                        </td>
+                    `;
+                    valuesTable.appendChild(row);
+                    return;
+                }
+
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${key}</td>
+                    <td>${values[key]}</td>
+                    <td>
+                        <input type="number" id="input-${key}" value="${values[key]}" step="0.01">
+                        <button onclick="updateValue('${key}')">Update</button>
+                    </td>
+                `;
+                valuesTable.appendChild(row);
+            });
+        }
+
+        // Update a single value
+        function updateValue(key) {
+            const inputElement = document.getElementById(`input-${key}`);
+            const newValue = parseFloat(inputElement.value);
+
+            if (!isNaN(newValue)) {
+                ws.send(JSON.stringify({
+                    action: "write",
+                    [key]: newValue
+                }));
+            } else {
+                alert("Please enter a valid number.");
+            }
+        }
+
+        function uploadToggle(key) {
+            ws.send(JSON.stringify({
+                action: "write",
+                [key]: !currentValues[key]
+            }));
+
+            const inputElement = document.getElementById(`input-${key}`);
+            inputElement.textContent = !currentValues[key];
+        }
+
+        // Update all values
+        document.getElementById("updateAllButton").addEventListener("click", () => {
+            const updates = { action: "write" };
+
+            Object.keys(currentValues).forEach((key) => {
+                if (key === "action") return; // Skip 'action' field
+
+                const inputElement = document.getElementById(`input-${key}`);
+                const newValue = parseFloat(inputElement.value);
+
+                if (!isNaN(newValue)) {
+                    updates[key] = newValue;
+                }
+            });
+
+            ws.send(JSON.stringify(updates));
+        });
+
+        // Refresh button
+        document.getElementById("refreshButton").addEventListener("click", () => {
+            ws.send(JSON.stringify({ action: "read" }));
+        });
+    </script>
+</body>
+
+</html>

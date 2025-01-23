@@ -4,6 +4,7 @@
 
 // Handler to write mutable value
 // void handleWrite();
+void printSerialAndSend(char *message);
 
 void wifiSetup();
 

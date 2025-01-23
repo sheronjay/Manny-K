@@ -16,18 +16,21 @@ void setup()
     delay(1);
   }
 
-  algorithmSetup();
+  // algorithmSetup();
 
   // wifi
   wifiSetup();
 
   Serial.println("Initializing sensors...");
   // initializeSensors();
-  encoderSetup();
+  // encoderSetup();
+
+  // wifi loop
+  // wifiLoop(NULL);
 
   Serial.println("Setup done");
 
-  // Create a FreeRTOS task for the WiFi loop
+    // Create a FreeRTOS task for the WiFi loop
   xTaskCreate(
       wifiLoop,    // Task function
       "WiFi Task", // Task name
@@ -36,25 +39,14 @@ void setup()
       1,           // Priority
       NULL         // Task handle
   );
+
+  printSerialAndSend("Setup done");
 }
 
 void loop()
 {
-  // Updates the sensor_left, right, and front variables
   // readThreeSensors();
-  // wallFollowPidControl(sensor_left, sensor_right, sensor_front);
-
-  delay(3000);
-  turnLeft();
-  delay(3000);
-  turnRight();
-  delay(3000);
-  turnBack();
-  delay(3000);
-
-  // if (encoder_counts >= cell_size)
-  // {
-  //   algorithmLoop();
-  //   encoder_counts = 0;
-  // }
+  // algorithmLoop();
+  printSerialAndSend("Looping...");
+  delay(1000);
 }

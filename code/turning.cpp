@@ -6,8 +6,8 @@
 
 // Robot constants
 float l = 8.2; // Wheelbase length (cm)
-float r = 1.7;  // Wheel radius (cm)
-int ratio = 97*6; // Gear ratio
+float r = 1.6;  // Wheel radius (cm)
+int cpr = 350; // Counts per revolution at the output shaft
 
 
 float p;
@@ -37,7 +37,7 @@ float calculatePID(float error, float *integral, float *previousError) {
   *previousError = error;
 
   // Combine terms
-  return proportional + integralTerm + derivative;
+  return proportional + integralTerm + derivative + motorSpeed;
 }
 
 void printConstants() {
@@ -61,7 +61,7 @@ void printConstants() {
 
 void turn(int ang) {
   // Calculate target counts for the given angle
-  float targetCounts = (abs(ang) * l * ratio) / (720 * r);
+  float targetCounts = (abs(ang) * l * cpr) / (720 * r);
   posL = 0;
   posR = 0;
 
@@ -96,7 +96,7 @@ void turn(int ang) {
   setMotor(0, 0, PWML, IN1L, IN2L);
   setMotor(0, 0, PWMR, IN1R, IN2R);
 
-  delay(1000); // Allow time to stabilize
+  // delay(1000); // Allow time to stabilize
 
   // reset the encoderCount which used to call the algorithm at each new cell
   encoder_counts = 0;

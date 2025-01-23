@@ -3,8 +3,8 @@
 #define ENCAL 32
 #define ENCBL 35
 
-#define ENCAR 23
-#define ENCBR 22
+#define ENCAR 18
+#define ENCBR 5
 
 // Defining the input pins for the motor
 #define PWML 0
