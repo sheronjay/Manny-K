@@ -23,7 +23,7 @@ void wallFollowPidControl(float sensor_left, float sensor_right)
 
 void leftWallFollowPidControl(float sensor_left)
 {
-  float error = sensor_left - dist_to_single_wall;
+  float error = sensor_left - dist_to_single_wall_left;
   float derivative = error - previousLeftError;
 
   // Calculate PID output
@@ -39,7 +39,7 @@ void leftWallFollowPidControl(float sensor_left)
 }
 void rightWallFollowPidControl(float sensor_right)
 {
-  float error = dist_to_single_wall - sensor_right;
+  float error = dist_to_single_wall_right - sensor_right;
   float derivative = error - previousRightError;
 
   // Calculate PID output
@@ -52,4 +52,10 @@ void rightWallFollowPidControl(float sensor_right)
 
   // Update previous error for the next cycle
   previousRightError = error;
+}
+
+void noWallFollowPidControl()
+{
+  setMotor(1, motorSpeed, PWML, IN1L, IN2L);
+  setMotor(1, motorSpeed, PWMR, IN1R, IN2R);
 }
