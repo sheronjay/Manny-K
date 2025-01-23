@@ -9,19 +9,22 @@
 #include "motorcontrol.h"
 #include <map>
 
+using namespace std;
+
 // Constants
 const int MAZE_SIZE = 16;
 
 // Global variables (since we're using functional approach)
-std::pair<int, int> currentPos = {0, 0};
-std::set<std::pair<int, int>> visited;
-std::stack<std::pair<int, int>> backtrackStack;
+pair<int, int> currentPos = {0, 0};
+set<pair<int, int>> visited;
+stack<pair<int, int>> backtrackStack;
 int orient = 0; // 0: North, 1: East, 2: South, 3: West
 
 // Arrays for maze state
 unsigned char maze[MAZE_SIZE][MAZE_SIZE];
 unsigned char walls[MAZE_SIZE][MAZE_SIZE] = {
-    {12, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9},
+    {12, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9},  //represents 1st column from bottom up
+    {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -58,7 +61,7 @@ constexpr int direction_map[4][3][3] = {
 // Helper functions
 void initializeMazeArray() {
     for (int i = 0; i < MAZE_SIZE; ++i) {
-        std::fill(maze[i], maze[i] + MAZE_SIZE, 255);  // Using 255 as "infinity"
+        fill(maze[i], maze[i] + MAZE_SIZE, 255);  // Using 255 as "infinity"
     }
 }
 
@@ -68,10 +71,10 @@ bool isValidPosition(int x, int y) {
 
 void floodfill() {
     initializeMazeArray();
-    std::queue<std::pair<int, int>> queue;
+    queue<pair<int, int>> queue;
 
     // Define goals
-    const std::array<std::pair<int, int>, 4> goals = {{
+    const array<pair<int, int>, 4> goals = {{
         {7, 7}, {7, 8}, {8, 7}, {8, 8}
     }};
 
@@ -117,7 +120,12 @@ void updateWalls() {
     }
 }
 
-void moveToNextCell(const std::tuple<int, int, int>& next) {
+void algorithmSetup() {
+    currentPos = {0, 0};
+    orient = 0;
+}
+
+void moveToNextCell(const tuple<int, int, int>& next) {
     auto [nextX, nextY, direction] = next;
     
     if (visited.find({nextX, nextY}) == visited.end()) {
@@ -152,8 +160,8 @@ void algorithmLoop() {
     floodfill();
 
     // Generate neighbors
-    std::vector<std::tuple<int, int, int>> neighbors;
-    std::tuple<int, int, int> nearestNeighbor = {-1, -1, -1};
+    vector<tuple<int, int, int>> neighbors;
+    tuple<int, int, int> nearestNeighbor = {-1, -1, -1};
     unsigned char minDistance = 255;  // Initialize to max value
 
     for (int d = 0; d < 4; ++d) {
@@ -175,7 +183,7 @@ void algorithmLoop() {
         }
     }
 
-    if (std::get<0>(nearestNeighbor) != -1) {  // If we found a valid neighbor
+    if (get<0>(nearestNeighbor) != -1) {  // If we found a valid neighbor
         moveToNextCell(nearestNeighbor);
     } 
     
@@ -220,7 +228,7 @@ void algorithmLoop() {
                     continue;
                 }
 
-                std::map<std::pair<int, int>, int> directionMap = {
+                map<pair<int, int>, int> directionMap = {
                     {{0, 1}, 0}, {{1, 0}, 1}, {{0, -1}, 2}, {{-1, 0}, 3}
                 };
 

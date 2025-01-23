@@ -5,7 +5,7 @@ int side_threshold = 500;     // Threshold for the side sensors to detect a wall
 int dist_to_single_wall = 50; // Distance to be maintained when following a single wall
 
 int maze_width = 500; // Width of the maze in mm
-int car_width = 150;  // Width of the car in mm
+int car_width = 100;  // Width of the car in mm
 
 float sensor_left = (maze_width - car_width) * 0.5;
 float sensor_front = (maze_width - car_width) * 0.5;
