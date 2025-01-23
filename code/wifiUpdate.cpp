@@ -38,8 +38,16 @@ void handleRead()
     doc["kdA"] = KdA;
     doc["kpD"] = KpD;
     doc["kdD"] = KdD;
+
+    doc["kpR"] = KpR;
+    doc["kdR"] = KdR;
+    doc["kpL"] = KpL;
+    doc["kdL"] = KdL;
+
+    doc["motorSpeed"] = motorSpeed;
     doc["forward_threshold"] = forward_threshold;
     doc["side_threshold"] = side_threshold;
+    doc["dist_to_single_wall"] = dist_to_single_wall;
     doc["maze_width"] = maze_width;
     doc["car_width"] = car_width;
     doc["sensor_left"] = sensor_left;
@@ -80,8 +88,16 @@ void handleWrite(const WebsocketsMessage &message)
         KdA = doc["kdA"] | KdA;
         KpD = doc["kpD"] | KpD;
         KdD = doc["kdD"] | KdD;
+
+        KpR = doc["kpR"] | KpR;
+        KdR = doc["kdR"] | KdR;
+        KpL = doc["kpL"] | KpL;
+        KdL = doc["kdL"] | KdL;
+
+        motorSpeed = doc["motorSpeed"] | motorSpeed;
         forward_threshold = doc["forward_threshold"] | forward_threshold;
         side_threshold = doc["side_threshold"] | side_threshold;
+        dist_to_single_wall = doc["dist_to_single_wall"] | dist_to_single_wall;
         maze_width = doc["maze_width"] | maze_width;
         car_width = doc["car_width"] | car_width;
         sensor_left = doc["sensor_left"] | sensor_left;
