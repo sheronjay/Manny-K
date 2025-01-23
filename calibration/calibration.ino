@@ -107,9 +107,13 @@ void setup()
 
   Serial.println("SetID function called...");
 
-  left.setMeasurementTimingBudgetMicroSeconds(200000);
-  front.setMeasurementTimingBudgetMicroSeconds(200000);
-  right.setMeasurementTimingBudgetMicroSeconds(200000);
+  // left.setMeasurementTimingBudgetMicroSeconds(200);
+  // front.setMeasurementTimingBudgetMicroSeconds(200);
+  // right.setMeasurementTimingBudgetMicroSeconds(200);
+
+  left.configSensor(Adafruit_VL53L0X::VL53L0X_SENSE_HIGH_ACCURACY);
+  front.configSensor(Adafruit_VL53L0X::VL53L0X_SENSE_HIGH_ACCURACY);
+  right.configSensor(Adafruit_VL53L0X::VL53L0X_SENSE_HIGH_ACCURACY);
 
   Serial.println("Measurement timing budget set to 200000...");
 }
@@ -118,7 +122,7 @@ void loop()
 {
   while (readIndex < numReadings)
   {
-    left.rangingTest(&measure_left, false); // Perform a ranging test (no debug output)
+    front.rangingTest(&measure_left, false); // Perform a ranging test (no debug output)
     if (measure_left.RangeStatus != 4)
     {
       distance = measure_left.RangeMilliMeter;
