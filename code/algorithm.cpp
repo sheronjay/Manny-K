@@ -149,11 +149,6 @@ void moveToNextCell(const tuple<int, int, int>& next) {
     currentPos = {nextX, nextY};
 }
 
-void algorithmSetup() {
-    currentPos = {0, 0};
-    orient = 0;
-}
-
 void algorithmLoop() {
     visited.insert(currentPos);
     updateWalls();
