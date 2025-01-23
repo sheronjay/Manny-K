@@ -5,8 +5,8 @@ if [ -f .env ]; then
 fi
 
 PORT=${PORT} 
-BAUD_RATE="9600"
+BAUD_RATE=${BAUD_RATE} | "9600"
 FQBN=${BOARD}
 
 # Run the arduino-cli monitor command
-arduino-cli monitor -p $PORT -b $BAUD_RATE --fqbn $FQBN
+arduino-cli monitor -p $PORT --config $BAUD_RATE --fqbn $FQBN

@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Define variables
-SKETCH_PATH="./code/code.ino"  # Path to your sketch folder
 # Load environment variables from .env file if it exists
 if [ -f .env ]; then
     export $(grep -v '^#' .env | xargs)
 fi
 
+SKETCH_PATH=${SKETCH_PATH}  # Path to your sketch folder
 BOARD=${BOARD}   # Board identifier (e.g., Arduino Uno)
 PORT=${PORT}         # Port your board is connected to
 FQBN=$BOARD               # Fully Qualified Board Name
