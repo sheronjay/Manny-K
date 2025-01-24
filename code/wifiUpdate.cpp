@@ -45,6 +45,8 @@ void handleRead()
     doc["kdL"] = KdL;
     doc["kpLR"] = KpLR;
     doc["kdLR"] = KdLR;
+    doc["kpF"] = KpF;
+    doc["kdF"] = KdF;
 
     doc["motorSpeed"] = motorSpeed;
     doc["forward_threshold"] = forward_threshold;
@@ -95,6 +97,8 @@ void handleWrite(const WebsocketsMessage &message)
         KdL = doc["kdL"] | KdL;
         KpLR = doc["kpLR"] | KpLR;
         KdLR = doc["kdLR"] | KdLR;
+        KpF = doc["kpF"] | KpF;
+        KdF = doc["kdF"] | KdF;
 
         motorSpeed = doc["motorSpeed"] | motorSpeed;
         forward_threshold = doc["forward_threshold"] | forward_threshold;

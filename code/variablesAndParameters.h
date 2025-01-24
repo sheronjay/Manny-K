@@ -32,6 +32,9 @@ extern float KdL; // Derivative gain for left distance controller
 extern float KpLR; // Proportional gain for no wall follow controller
 extern float KdLR; // Derivative gain for no wall follow controller
 
+extern float KpF; // Proportional gain for front sensor controller
+extern float KdF; // Derivative gain for front sensor controller
+
 extern float KpA; // Proportional gain for angle controller
 extern float KiA; // Integral gain for angle controller
 extern float KdA; // Derivative gain for angle controller
@@ -43,4 +46,5 @@ extern float previousError;
 extern float previousEncoderError;
 extern float previousLeftError;
 extern float previousRightError;
+extern float previousFrontError;
 extern int pwmValue;
