@@ -47,6 +47,7 @@ void leftWallFollowPidControl(float sensor_left)
 
   // Update previous error for the next cycle
   previousLeftError = error;
+  previousFrontError = frontError;
 }
 void rightWallFollowPidControl(float sensor_right)
 {
@@ -68,6 +69,7 @@ void rightWallFollowPidControl(float sensor_right)
 
   // Update previous error for the next cycle
   previousRightError = error;
+  previousFrontError = frontError;
 }
 
 void noWallFollowPidControl()
@@ -85,4 +87,5 @@ void noWallFollowPidControl()
   setMotor(1, motorSpeed + pwmValue - pwmValueFront, PWMR, IN1R, IN2R);
 
   previousEncoderError = error;
+  previousFrontError = frontError;
 }
