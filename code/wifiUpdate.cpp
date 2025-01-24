@@ -48,8 +48,6 @@ void handleRead()
     doc["forward_threshold"] = forward_threshold;
     doc["side_threshold"] = side_threshold;
     doc["dist_to_single_wall"] = dist_to_single_wall;
-    doc["maze_width"] = maze_width;
-    doc["car_width"] = car_width;
     doc["sensor_left"] = sensor_left;
     doc["sensor_front"] = sensor_front;
     doc["sensor_right"] = sensor_right;
@@ -98,8 +96,6 @@ void handleWrite(const WebsocketsMessage &message)
         forward_threshold = doc["forward_threshold"] | forward_threshold;
         side_threshold = doc["side_threshold"] | side_threshold;
         dist_to_single_wall = doc["dist_to_single_wall"] | dist_to_single_wall;
-        maze_width = doc["maze_width"] | maze_width;
-        car_width = doc["car_width"] | car_width;
         sensor_left = doc["sensor_left"] | sensor_left;
         sensor_front = doc["sensor_front"] | sensor_front;
         sensor_right = doc["sensor_right"] | sensor_right;

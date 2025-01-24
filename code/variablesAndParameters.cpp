@@ -1,10 +1,8 @@
 #include "variablesAndParameters.h"
 
-int forward_threshold = 60;  // Threshold for the front sensor to detect end of the path
+int forward_threshold = 100;  // Threshold for the front sensor to detect end of the path
 int side_threshold = 200;     // Threshold for the side sensors to detect a wall
 
-int maze_width = 500; // Width of the maze in mm
-int car_width = 100;  // Width of the car in mm
 
 int dist_to_single_wall = 65; // Distance to be maintained when following a single wall
 int dist_to_single_wall_right = 65;

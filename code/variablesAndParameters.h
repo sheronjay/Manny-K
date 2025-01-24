@@ -7,9 +7,6 @@ extern int dist_to_single_wall;
 extern int dist_to_single_wall_right;
 extern int dist_to_single_wall_left;
 
-extern int maze_width; // Width of the maze in mm
-extern int car_width;  // Width of the car in mm
-
 // sensor readings
 extern float sensor_left;
 extern float sensor_front;
