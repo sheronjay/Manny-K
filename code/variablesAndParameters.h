@@ -29,6 +29,9 @@ extern float KdR; // Derivative gain for right distance controller
 extern float KpL; // Proportional gain for left distance controller
 extern float KdL; // Derivative gain for left distance controller
 
+extern float KpLR; // Proportional gain for no wall follow controller
+extern float KdLR; // Derivative gain for no wall follow controller
+
 extern float KpA; // Proportional gain for angle controller
 extern float KiA; // Integral gain for angle controller
 extern float KdA; // Derivative gain for angle controller
@@ -37,6 +40,7 @@ extern int motorSpeed; // base motor speed for motor control
 
 // Constants for the distance controller
 extern float previousError;
+extern float previousEncoderError;
 extern float previousLeftError;
 extern float previousRightError;
 extern int pwmValue;

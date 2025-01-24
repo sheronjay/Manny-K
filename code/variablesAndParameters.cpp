@@ -32,10 +32,14 @@ float KdR = 0.2; // Derivative gain for right distance controller
 float KpL = 0.4; // Proportional gain for left distance controller
 float KdL = 0.2; // Derivative gain for left distance controller
 
+float KpLR = 0.5; // Proportional gain for no wall follow controller
+float KdLR = 0.5; // Derivative gain for no wall follow controller
+
 int motorSpeed = 80;
 
 // Constants for the distance controller
 float previousError = 0;
+float previousEncoderError = 0;
 float previousLeftError = 0;
 float previousRightError = 0;
 int pwmValue = 0;

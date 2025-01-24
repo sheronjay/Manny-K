@@ -100,6 +100,8 @@ void turn(int ang) {
 
   // reset the encoderCount which used to call the algorithm at each new cell
   encoder_counts = 0;
+  posL = 0;
+  posR = 0;
 
   return;
 }

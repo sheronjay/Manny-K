@@ -27,7 +27,7 @@ void leftWallFollowPidControl(float sensor_left)
   float derivative = error - previousLeftError;
 
   // Calculate PID output
-  pwmValue = KpD * error + KdD * derivative;
+  pwmValue = KpL * error + KdL * derivative;
   Serial.println(pwmValue);
 
   // Apply the PID correction to motors
@@ -43,7 +43,7 @@ void rightWallFollowPidControl(float sensor_right)
   float derivative = error - previousRightError;
 
   // Calculate PID output
-  pwmValue = KpD * error + KdD * derivative;
+  pwmValue = KpR * error + KdR * derivative;
   Serial.println(pwmValue);
 
   // Apply the PID correction to motors
@@ -56,6 +56,12 @@ void rightWallFollowPidControl(float sensor_right)
 
 void noWallFollowPidControl()
 {
-  setMotor(1, motorSpeed, PWML, IN1L, IN2L);
-  setMotor(1, motorSpeed, PWMR, IN1R, IN2R);
+  float error = posL - posR;
+  float derivative = error - previousEncoderError;
+
+  pwmValue = KpLR * error + KdLR * derivative;
+  setMotor(1, motorSpeed - pwmValue, PWML, IN1L, IN2L);
+  setMotor(1, motorSpeed + pwmValue, PWMR, IN1R, IN2R);
+
+  previousEncoderError = error;
 }
