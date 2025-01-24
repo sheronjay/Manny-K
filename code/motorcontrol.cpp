@@ -82,7 +82,7 @@ void readEncoderR()
 void moveForward()
 {
     encoder_counts = 0;
-    while (encoder_counts < 7000) {
+    while (encoder_counts < encoder_counts_per_cell) {
         readThreeSensors();
         if (sensor_left < side_threshold && sensor_right < side_threshold) {
             wallFollowPidControl(sensor_left, sensor_right);
