@@ -1,5 +1,6 @@
 #include "VL53L0X_Sensors.h"
 #include "variablesAndParameters.h"
+#include "pins.h"
 #include "Adafruit_VL53L0X.h"
 
 // Sensor objects
