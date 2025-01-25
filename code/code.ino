@@ -9,85 +9,89 @@
 
 void setup()
 {
-  Serial.begin(9600);
-  Serial.println("Starting setup...");
-  while (!Serial)
-  {
-    delay(1);
-  }
+    Serial.begin(9600);
+    Serial.println("Starting setup...");
+    while (!Serial)
+    {
+        delay(1);
+    }
 
-  // algorithmSetup();
+    // algorithmSetup();
 
-  // wifi
-  wifiSetup();
+    // wifi
+    wifiSetup();
 
-  Serial.println("Initializing sensors...");
-  initializeSensors();
-  encoderSetup();
+    // motor setup
+    Serial.println("Initializing motors...");
+    motorSetup();
+    encoderSetup();
 
-  Serial.println("Setup done");
+    Serial.println("Initializing sensors...");
+    initializeSensors();
 
-  // Create a FreeRTOS task for the WiFi loop
-  xTaskCreate(
-      wifiLoop,    // Task function
-      "WiFi Task", // Task name
-      4096,        // Stack size (in bytes)
-      NULL,        // Task parameters
-      1,           // Priority
-      NULL         // Task handle
-  );
+    Serial.println("Setup done");
 
-  printSerialAndSend("Setup done");
+    // Create a FreeRTOS task for the WiFi loop
+    xTaskCreate(
+        wifiLoop,    // Task function
+        "WiFi Task", // Task name
+        4096,        // Stack size (in bytes)
+        NULL,        // Task parameters
+        1,           // Priority
+        NULL         // Task handle
+    );
+
+    printSerialAndSend("Setup done");
 }
 
 void loop()
 {
-  readThreeSensors();
+    readThreeSensors();
 
-  if (sensor_front < forward_threshold)
-  {
-    if (sensor_left < side_threshold && sensor_right < side_threshold)
+    if (sensor_front < forward_threshold)
     {
-      printSerialAndSend("Turning back");
-      turnBack();
-    }
-    else if (sensor_left < side_threshold)
-    {
-      printSerialAndSend("Turning right");
-      turnRight();
-    }
-    else if (sensor_right < side_threshold)
-    {
-      printSerialAndSend("Turning left");
-      turnLeft();
-    }
-    else
-    {
-      printSerialAndSend("both sides available, turnning left");
-      turnLeft();
-    }
-  }
-  else
-  {
-    if (sensor_left < side_threshold && sensor_right < side_threshold)
-    {
-      dist_to_single_wall_left = sensor_left;
-      dist_to_single_wall_right = sensor_right;
-      wallFollowPidControl(sensor_left, sensor_right);
-    }
-    else if (sensor_left < side_threshold)
-    {
-      leftWallFollowPidControl(sensor_left);
-    }
-    else if (sensor_right < side_threshold)
-    {
-      rightWallFollowPidControl(sensor_right);
+        if (sensor_left < side_threshold && sensor_right < side_threshold)
+        {
+            printSerialAndSend("Turning back");
+            turnBack();
+        }
+        else if (sensor_left < side_threshold)
+        {
+            printSerialAndSend("Turning right");
+            turnRight();
+        }
+        else if (sensor_right < side_threshold)
+        {
+            printSerialAndSend("Turning left");
+            turnLeft();
+        }
+        else
+        {
+            printSerialAndSend("both sides available, turnning left");
+            turnLeft();
+        }
     }
     else
     {
-      noWallFollowPidControl();
+        if (sensor_left < side_threshold && sensor_right < side_threshold)
+        {
+            dist_to_single_wall_left = sensor_left;
+            dist_to_single_wall_right = sensor_right;
+            wallFollowPidControl(sensor_left, sensor_right);
+        }
+        else if (sensor_left < side_threshold)
+        {
+            leftWallFollowPidControl(sensor_left);
+        }
+        else if (sensor_right < side_threshold)
+        {
+            rightWallFollowPidControl(sensor_right);
+        }
+        else
+        {
+            noWallFollowPidControl();
+        }
     }
-  }
-  // algorithmLoop();
-  printSerialAndSend(String(sensor_left) + "," + String(sensor_front) + "," + String(sensor_right));
+    // algorithmLoop();
+    printSerialAndSend(String(sensor_left) + "," + String(sensor_front) + "," + String(sensor_right));
 }
