@@ -1,18 +1,19 @@
 #pragma once
 
-#define ENCAL 32
+#define ENCAL 34
 #define ENCBL 35
 
-#define ENCAR 18
-#define ENCBR 5
+#define ENCAR 36
+#define ENCBR 39
 
 // Defining the input pins for the motor
-#define PWML 0
-#define IN1L 2
-#define IN2L 13
+#define PWML 17
+#define IN1L 16
+#define IN2L 4
 
 // Defining the input pins for the motor
-#define PWMR 4
-#define IN1R 16
-#define IN2R 17
+#define PWMR 2
+#define IN1R 19
+#define IN2R 18
 
+#define STBY 5

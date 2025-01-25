@@ -29,27 +29,33 @@ void setMotor(int dir, int pwmVal, int pwm, int in1, int in2)
     }
 }
 
-void encoderSetup() {
+// the motor driver is enabled by setting the STBY pin high
+void motorSetup()
+{
+    pinMode(STBY, OUTPUT);
+    digitalWrite(STBY, HIGH);
+}
 
-  // Encoder pins setup
-  pinMode(ENCAL, INPUT);
-  pinMode(ENCBL, INPUT);
-  pinMode(ENCAR, INPUT);
-  pinMode(ENCBR, INPUT);
+void encoderSetup()
+{
 
-  // Motor pins setup
-  pinMode(PWML, OUTPUT);
-  pinMode(IN1L, OUTPUT);
-  pinMode(IN2L, OUTPUT);
-  pinMode(PWMR, OUTPUT);
-  pinMode(IN1R, OUTPUT);
-  pinMode(IN2R, OUTPUT);
+    // Encoder pins setup
+    pinMode(ENCAL, INPUT);
+    pinMode(ENCBL, INPUT);
+    pinMode(ENCAR, INPUT);
+    pinMode(ENCBR, INPUT);
 
+    // Motor pins setup
+    pinMode(PWML, OUTPUT);
+    pinMode(IN1L, OUTPUT);
+    pinMode(IN2L, OUTPUT);
+    pinMode(PWMR, OUTPUT);
+    pinMode(IN1R, OUTPUT);
+    pinMode(IN2R, OUTPUT);
 
-
-  // Attach interrupts for encoders
-  attachInterrupt(digitalPinToInterrupt(ENCAL), readEncoderL, RISING);
-  attachInterrupt(digitalPinToInterrupt(ENCAR), readEncoderR, RISING);
+    // Attach interrupts for encoders
+    attachInterrupt(digitalPinToInterrupt(ENCAL), readEncoderL, RISING);
+    attachInterrupt(digitalPinToInterrupt(ENCAR), readEncoderR, RISING);
 }
 
 void readEncoderL()
@@ -82,15 +88,19 @@ void readEncoderR()
 void moveForward()
 {
     encoder_counts = 0;
-    while (encoder_counts < encoder_counts_per_cell) {
+    while (encoder_counts < encoder_counts_per_cell)
+    {
         readThreeSensors();
-        if (sensor_left < side_threshold && sensor_right < side_threshold) {
+        if (sensor_left < side_threshold && sensor_right < side_threshold)
+        {
             wallFollowPidControl(sensor_left, sensor_right);
-        } 
-        else if (sensor_right >= side_threshold) {
+        }
+        else if (sensor_right >= side_threshold)
+        {
             leftWallFollowPidControl(sensor_left);
         }
-        else if (sensor_left >= side_threshold) {
+        else if (sensor_left >= side_threshold)
+        {
             rightWallFollowPidControl(sensor_right);
         }
     }
