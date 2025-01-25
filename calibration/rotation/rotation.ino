@@ -1,13 +1,14 @@
 #include <Arduino.h>
-#include "../../code/variablesAndParameters.h"
-#include "../../code/pins.h"
-#include "../../code/motorcontrol.h"
-#include "../../code/wifiUpdate.h"
-#include "../../code/VL53L0X_Sensors.h"
-#include "../../code/turning.cpp"
+#include "variablesAndParameters.h"
+#include "pins.h"
+#include "motorcontrol.h"
+#include "wifiUpdate.h"
+#include "VL53L0X_Sensors.h"
+#include "turning.h"
 
 int initial_front_sensor;
 bool turning_completed = false;
+int angle = 0;
 
 void setup()
 {
@@ -36,19 +37,17 @@ void setup()
     );
 
     printSerialAndSend("Setup done");
-
-    posL = 0;
-    posR = 0;
     readThreeSensors();
     printSerialAndSend(String(sensor_front));
     initial_front_sensor = sensor_front;
 
     turn(270);
+    angle += 270;
 }
 
 void loop()
 {
-    printSerialAndSend(String(posL) + String(" ") + String(posR));
+    printSerialAndSend(String(angle));
 
     readThreeSensors();
     if (sensor_front < initial_front_sensor - 10)
@@ -59,5 +58,6 @@ void loop()
     if (!turning_completed)
     {
         turn(5);
+        angle += 5;
     }
 }

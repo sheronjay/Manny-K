@@ -69,7 +69,7 @@ void turn(int ang) {
   Serial.println(targetCounts);
 
   // Turn logic
-  while ((abs(posL) < targetCounts) && (abs(posR) < targetCounts)) {
+  while ((abs(posL) < targetCounts) || (abs(posR) < targetCounts)) {
     // Calculate errors
     errorL = targetCounts - abs(posL);
     errorR = targetCounts - abs(posR);
@@ -104,5 +104,6 @@ void turn(int ang) {
   posR = 0;
 
   return;
+
 }
 
