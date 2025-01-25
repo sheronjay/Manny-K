@@ -14,7 +14,7 @@ float sensor_front = dist_to_single_wall;
 float sensor_right = dist_to_single_wall;
 
 int encoder_counts = 0;
-int encoder_counts_per_cell = 7000;
+int encoder_counts_per_cell = 605; // measured practically, 98cm => 3360 pulses
 
 int posL = 0; // Encoder position for left motor
 int posR = 0; // Encoder position for right motor
@@ -33,7 +33,7 @@ float KpL = 0.4; // Proportional gain for left distance controller
 float KdL = 0.2; // Derivative gain for left distance controller
 
 float KpLR = 1; // Proportional gain for no wall follow controller
-float KdLR = 0.0; // Derivative gain for no wall follow controller
+float KdLR = 0.2; // Derivative gain for no wall follow controller
 
 float KpF = 0.5; // Proportional gain for front sensor controller
 float KdF = 0.5; // Derivative gain for front sensor controller
