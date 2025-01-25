@@ -46,8 +46,6 @@ void loop()
 
   if (sensor_front < forward_threshold)
   {
-    delay(1000);
-
     if (sensor_left < side_threshold && sensor_right < side_threshold)
     {
       printSerialAndSend("Turning back");

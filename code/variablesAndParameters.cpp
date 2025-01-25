@@ -32,8 +32,8 @@ float KdR = 0.2; // Derivative gain for right distance controller
 float KpL = 0.4; // Proportional gain for left distance controller
 float KdL = 0.2; // Derivative gain for left distance controller
 
-float KpLR = 0.5; // Proportional gain for no wall follow controller
-float KdLR = 0.5; // Derivative gain for no wall follow controller
+float KpLR = 1; // Proportional gain for no wall follow controller
+float KdLR = 0.0; // Derivative gain for no wall follow controller
 
 float KpF = 0.5; // Proportional gain for front sensor controller
 float KdF = 0.5; // Derivative gain for front sensor controller
