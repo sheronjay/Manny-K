@@ -45,23 +45,23 @@ void setID() {
   digitalWrite(SHT_FRONT, LOW);
   digitalWrite(SHT_RIGHT, LOW);
 
-  // // Initialize left sensors
-  // if (!left.begin(LEFT_ADDRESS)) {
-  //   Serial.println(F("Failed to boot left VL53L0X"));
-  //   while (1);
-  // }
-  // delay(10);
+  // Initialize left sensors
+  if (!left.begin(LEFT_ADDRESS)) {
+    Serial.println(F("Failed to boot left VL53L0X"));
+    while (1);
+  }
+  delay(10);
 
-  // // Activate FRONT and reset others
-  // digitalWrite(SHT_FRONT, HIGH);
-  // digitalWrite(SHT_RIGHT, LOW);
+  // Activate FRONT and reset others
+  digitalWrite(SHT_FRONT, HIGH);
+  digitalWrite(SHT_RIGHT, LOW);
 
-  // // Initialize FRONT
-  // if (!front.begin(FRONT_ADDRESS)) {
-  //   Serial.println(F("Failed to boot front VL53L0X"));
-  //   while (1);
-  // }
-  // delay(10);
+  // Initialize FRONT
+  if (!front.begin(FRONT_ADDRESS)) {
+    Serial.println(F("Failed to boot front VL53L0X"));
+    while (1);
+  }
+  delay(10);
 
   // Activate RIGHT
   digitalWrite(SHT_RIGHT, HIGH);

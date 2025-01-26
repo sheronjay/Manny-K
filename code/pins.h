@@ -18,12 +18,7 @@
 
 #define STBY 5
 
-// Sensor I2C addresses
-#define LEFT_ADDRESS 0x30
-#define FRONT_ADDRESS 0x31
-#define RIGHT_ADDRESS 0x32
-
 // XSHUT pins
-#define SHT_LEFT 14
-#define SHT_FRONT 27
-#define SHT_RIGHT 12
+#define SHT_LEFT 23
+#define SHT_FRONT 32
+#define SHT_RIGHT 25
