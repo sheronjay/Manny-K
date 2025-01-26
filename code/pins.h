@@ -7,14 +7,14 @@
 #define ENCBR 39
 
 // Defining the input pins for the motor
-#define PWML 17
-#define IN1L 16
-#define IN2L 4
+#define PWML 4
+#define IN1L 17
+#define IN2L 16
 
 // Defining the input pins for the motor
 #define PWMR 2
-#define IN1R 19
-#define IN2R 18
+#define IN1R 18
+#define IN2R 19
 
 #define STBY 5
 
