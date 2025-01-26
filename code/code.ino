@@ -21,16 +21,6 @@ void setup()
     // wifi
     wifiSetup();
 
-    // motor setup
-    Serial.println("Initializing motors...");
-    motorSetup();
-    encoderSetup();
-
-    Serial.println("Initializing sensors...");
-    initializeSensors();
-
-    Serial.println("Setup done");
-
     // Create a FreeRTOS task for the WiFi loop
     xTaskCreate(
         wifiLoop,    // Task function
@@ -40,6 +30,16 @@ void setup()
         1,           // Priority
         NULL         // Task handle
     );
+
+    // motor setup
+    Serial.println("Initializing motors...");
+    motorSetup();
+    encoderSetup();
+
+    Serial.println("Initializing sensors...");
+    initializeSensors();
+
+    Serial.println("Setup done");
 
     printSerialAndSend("Setup done");
 }

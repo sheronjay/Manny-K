@@ -37,7 +37,7 @@ float calculatePID(float error, float *integral, float *previousError) {
   *previousError = error;
 
   // Combine terms
-  return proportional + integralTerm + derivative + motorSpeed;
+  return proportional + integralTerm + derivative + motorSpeed * 0.5;
 }
 
 void printConstants() {
