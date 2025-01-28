@@ -1,10 +1,10 @@
 #pragma once
 
-#define ENCAL 34
-#define ENCBL 35
+#define ENCAL 32
+#define ENCBL 33
 
-#define ENCAR 36
-#define ENCBR 39
+#define ENCAR 34
+#define ENCBR 35
 
 // Defining the input pins for the motor
 #define PWML 4
@@ -17,6 +17,6 @@
 #define IN2R 19
 
 // XSHUT pins
-#define SHT_LEFT 23
-#define SHT_FRONT 32
+#define SHT_LEFT 27
+#define SHT_FRONT 26
 #define SHT_RIGHT 25
