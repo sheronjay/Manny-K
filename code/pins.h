@@ -16,8 +16,6 @@
 #define IN1R 18
 #define IN2R 19
 
-#define STBY 5
-
 // XSHUT pins
 #define SHT_LEFT 23
 #define SHT_FRONT 32
