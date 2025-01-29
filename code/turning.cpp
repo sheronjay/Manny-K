@@ -37,7 +37,7 @@ float calculatePID(float error, float *integral, float *previousError) {
   *previousError = error;
 
   // Combine terms
-  return proportional + integralTerm + derivative + motorSpeed * 0.5;
+  return proportional + integralTerm + derivative + motorSpeed;
 }
 
 void printConstants() {
@@ -69,7 +69,7 @@ void turn(int ang) {
   Serial.println(targetCounts);
 
   // Turn logic
-  while ((abs(posL) < targetCounts) || (abs(posR) < targetCounts)) {
+  while ((abs(posL) < targetCounts) && (abs(posR) < targetCounts)) {
     // Calculate errors
     errorL = targetCounts - abs(posL);
     errorR = targetCounts - abs(posR);
