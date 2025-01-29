@@ -6,6 +6,7 @@
 #include "wifiUpdate.h"
 #include "motorcontrol.h"
 #include <Arduino.h>
+#include "MPU6050.h"
 
 void setup()
 {
@@ -37,6 +38,7 @@ void setup()
     encoderSetup();
 
     Serial.println("Initializing sensors...");
+    intializeGyro();
     initializeSensors();
 
     Serial.println("Setup done");

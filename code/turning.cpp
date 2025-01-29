@@ -3,107 +3,27 @@
 #include "motorcontrol.h"
 #include "variablesAndParameters.h"
 #include "pins.h"
+#include "MPU6050.h"
 
-// Robot constants
-float l = 8.2; // Wheelbase length (cm)
-float r = 1.6;  // Wheel radius (cm)
-int cpr = 350; // Counts per revolution at the output shaft
-
-
-float p;
-float i;
-float d;
-
-float errorL = 0, errorR = 0; // Error values for left and right motors
-float integralL = 0, integralR = 0; // Integral terms
-float previousErrorL = 0, previousErrorR = 0; // Previous errors for derivative calculation
-
-// Function to calculate PID output
-float calculatePID(float error, float *integral, float *previousError) {
-  if (int(error) == 0) {
-    return 0;
-  }
-  // Proportional term
-  float proportional = KpA * error;
-
-  // Integral term
-  *integral += error;
-  float integralTerm = KiA * (*integral);
-
-  // Derivative term
-  float derivative = KdA * (error - *previousError);
-
-  // Update previous error
-  *previousError = error;
-
-  // Combine terms
-  return proportional + integralTerm + derivative + motorSpeed * 0.5;
-}
-
-void printConstants() {
-
-  if (Serial.available()) {
-    p = Serial.parseFloat();  // Read the first float (kP)
-    d = Serial.parseFloat();  // Read the second float (kI)
-    i = Serial.parseFloat();  // Read the third float (kD)
-
-    if (p != 0) {
-      KpA = p;
-      KiA = i;
-      KdA = d;
-
-      Serial.println(KpA);
-      Serial.println(KiA);
-      Serial.println(KdA);
-    }
-  }
-}
 
 void turn(int ang) {
-  // Calculate target counts for the given angle
-  float targetCounts = (abs(ang) * l * cpr) / (720 * r);
-  posL = 0;
-  posR = 0;
-
-  Serial.print("Target Counts: ");
-  Serial.println(targetCounts);
-
-  // Turn logic
-  while ((abs(posL) < targetCounts) || (abs(posR) < targetCounts)) {
-    // Calculate errors
-    errorL = targetCounts - abs(posL);
-    errorR = targetCounts - abs(posR);
-
-    // Calculate PID outputs
-    float controlL = calculatePID(errorL, &integralL, &previousErrorL);
-    float controlR = calculatePID(errorR, &integralR, &previousErrorR);
-
-    // Limit control output to valid PWM range
-    controlL = constrain(controlL, 0, 255);
-    controlR = constrain(controlR, 0, 255);
-
-    // Set motor directions based on turning angle
-    if (ang > 0) { // Turn right
-      setMotor(1, controlL, PWML, IN1L, IN2L);
-      setMotor(-1, controlR, PWMR, IN1R, IN2R);
-    } else if (ang <0 ) { // Turn left
-      setMotor(-1, controlL, PWML, IN1L, IN2L);
-      setMotor(1, controlR, PWMR, IN1R, IN2R);
-    }
+  if (ang > 0) { // Turn right
+    setMotor(1, motorSpeed, PWML, IN1L, IN2L);
+    setMotor(-1, motorSpeed, PWMR, IN1R, IN2R);
+  } else if (ang < 0 ) { // Turn left
+    setMotor(-1, motorSpeed, PWML, IN1L, IN2L);
+    setMotor(1, motorSpeed, PWMR, IN1R, IN2R);
   }
 
-  // Stop motors after completing the turn
+  while (abs(currentAngle) < abs(ang)) {  // Ensure we check absolute angles
+    updateTurnedAngle();
+    delay(10);
+  }
+
+  // Stop the motors once the target angle is reached
   setMotor(0, 0, PWML, IN1L, IN2L);
   setMotor(0, 0, PWMR, IN1R, IN2R);
 
-  delay(1000); // Allow time to stabilize
-
-  // reset the encoderCount which used to call the algorithm at each new cell
-  encoder_counts = 0;
-  posL = 0;
-  posR = 0;
-
-  return;
-
+  // Reset the currentAngle to prevent drift between turns
+  currentAngle = 0;
 }
-
