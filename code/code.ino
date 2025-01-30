@@ -6,6 +6,7 @@
 #include "wifiUpdate.h"
 #include "motorcontrol.h"
 #include <Arduino.h>
+#include "pins.h"
 #include "MPU6050.h"
 
 void setup()
@@ -34,7 +35,6 @@ void setup()
 
     // motor setup
     Serial.println("Initializing motors...");
-    motorSetup();
     encoderSetup();
 
     Serial.println("Initializing sensors...");

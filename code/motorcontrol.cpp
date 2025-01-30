@@ -29,13 +29,6 @@ void setMotor(int dir, int pwmVal, int pwm, int in1, int in2)
     }
 }
 
-// the motor driver is enabled by setting the STBY pin high
-void motorSetup()
-{
-    pinMode(STBY, OUTPUT);
-    digitalWrite(STBY, HIGH);
-}
-
 void encoderSetup()
 {
 
