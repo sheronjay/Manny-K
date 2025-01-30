@@ -202,7 +202,6 @@ void algorithmLoop() {
                     !(walls[bx][by] & wall_bits[d]) &&
                     visited.find({nx, ny}) == visited.end()) {
                     hasUnvisitedNeighbors = true;
-                    break;
                 }
             }
 
@@ -228,7 +227,7 @@ void algorithmLoop() {
                 };
 
                 int direction = directionMap[{dx, dy}];
-                int turn = (direction - orient) % 4;
+                int turn = (direction - orient + 4) % 4;
 
                 if (turn == 1) {
                     turnRight();
@@ -238,6 +237,7 @@ void algorithmLoop() {
                 } else if (turn == 3) {
                     turnLeft();
                 }
+
                 moveForward();
 
                 orient = direction;
