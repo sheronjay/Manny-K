@@ -38,12 +38,13 @@ void setup()
     encoderSetup();
 
     Serial.println("Initializing sensors...");
-    intializeGyro();
+    initializeGyro();
     initializeSensors();
 
     Serial.println("Setup done");
 
     printSerialAndSend("Setup done");
+    delay(3000);
 }
 
 void loop()

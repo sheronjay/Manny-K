@@ -18,5 +18,5 @@
 
 // XSHUT pins
 #define SHT_LEFT 27
-#define SHT_FRONT 26
-#define SHT_RIGHT 25
+#define SHT_FRONT 25
+#define SHT_RIGHT 26
