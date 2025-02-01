@@ -114,3 +114,10 @@ void turnBack()
     turn(90);
     turn(90);
 }
+
+void applyBreak()
+{
+    setMotor(-1, motorSpeed, PWML, IN1L, IN2L);
+    setMotor(-1, motorSpeed, PWMR, IN1R, IN2R);
+    delay(10);
+}

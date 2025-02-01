@@ -7,6 +7,7 @@
 
 void turn(int ang)
 {
+  applyBreak();
   if (ang > 0)
   { // Turn right
     setMotor(1, motorSpeed, PWML, IN1L, IN2L);
