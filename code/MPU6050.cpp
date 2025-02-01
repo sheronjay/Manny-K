@@ -1,5 +1,7 @@
 #include "MPU6050.h"
 
+Adafruit_MPU6050 mpu;
+
 // Initialize global variables
 float currentAngle = 0.0;
 float gyroZ = 0.0;

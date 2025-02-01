@@ -4,8 +4,6 @@
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
 
-// MPU6050 instance
-extern Adafruit_MPU6050 mpu;
 
 // Declare global variables for the gyro and angle tracking
 extern float currentAngle;  // Current angle (in degrees)
