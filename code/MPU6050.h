@@ -1,7 +1,8 @@
 #pragma once
 
 #include <Adafruit_MPU6050.h>
-#include <Adafruit_Sensor.h>  // Required by Adafruit MPU6050
+#include <Adafruit_Sensor.h>
+#include <Wire.h>
 
 // MPU6050 instance
 extern Adafruit_MPU6050 mpu;

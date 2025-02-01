@@ -7,18 +7,16 @@ unsigned long lastTime = 0;
 
 
 void initializeGyro() {
-  // Initialize the MPU6050 sensor
+  // Try to initialize!
   if (!mpu.begin()) {
-    Serial.println("MPU6050 not found!");
-    while (1);
+    Serial.println("Failed to find MPU6050 chip");
+    while (1) {
+      delay(10);
+    }
   }
-
-  // Set the range of the gyroscope (optional)
-  mpu.setGyroRange(Adafruit_MPU6050::GYRO_RANGE_250_DPS);
-  
-  // Print the sensor details
-  Serial.println("MPU6050 Initialized!");
+  Serial.println("MPU6050 Found!");
 }
+
 
 void updateTurnedAngle() {
   sensors_event_t a, g, temp;
@@ -32,6 +30,8 @@ void updateTurnedAngle() {
   float deltaTime = (currentTime - lastTime) / 1000.0; // Time in seconds
 
   // Angle = previous angle + (gyro rate * delta time)
-  currentAngle += gyroZ * deltaTime;
+  if (abs(gyroZ) > 0.8 ) {
+    currentAngle += gyroZ * deltaTime;
+  }
   lastTime = currentTime;
 }
