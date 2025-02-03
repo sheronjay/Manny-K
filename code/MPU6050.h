@@ -1,10 +1,5 @@
 #pragma once
 
-#include <Adafruit_MPU6050.h>
-#include <Adafruit_Sensor.h>
-#include <Wire.h>
-
-
 // Declare global variables for the gyro and angle tracking
 extern float currentAngle;  // Current angle (in degrees)
 extern float gyroZ;         // Z-axis rotational velocity (in degrees per second)
