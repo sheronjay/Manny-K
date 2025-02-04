@@ -4,7 +4,7 @@
 #include <Arduino.h>
 
 // Speed of sound in cm/us
-#define SOUND_SPEED 0.034
+#define SOUND_SPEED 0.34
 
 void initializeSensors()
 {

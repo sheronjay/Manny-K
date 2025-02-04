@@ -1,7 +1,7 @@
 #pragma once
 
-#define ENCAL 32
-#define ENCBL 23
+#define ENCAL 23
+#define ENCBL 32
 
 #define ENCAR 34
 #define ENCBR 35

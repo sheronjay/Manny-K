@@ -111,15 +111,14 @@ void turnRight()
 
 void turnBack()
 {
-    turn(90);
-    turn(90);
+    turn(180);
 }
 
 void applyBreak()
 {
     setMotor(-1, 200, PWML, IN1L, IN2L);
     setMotor(-1, 200, PWMR, IN1R, IN2R);
-    delay(10);
+    delay(20);
     setMotor(0, 0, PWML, IN1L, IN2L);
     setMotor(0, 0, PWMR, IN1R, IN2R);
 }

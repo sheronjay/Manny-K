@@ -84,8 +84,8 @@ void noWallFollowPidControl()
   float pwmValueFront = KpF * frontError + KdF * frontDerivative;
 
   pwmValue = KpLR * error + KdLR * derivative;
-  setMotor(1, motorSpeed + pwmValue + pwmValueFront, PWML, IN1L, IN2L);
-  setMotor(1, motorSpeed - pwmValue + pwmValueFront, PWMR, IN1R, IN2R);
+  setMotor(1, motorSpeed - pwmValue + pwmValueFront, PWML, IN1L, IN2L);
+  setMotor(1, motorSpeed + pwmValue + pwmValueFront, PWMR, IN1R, IN2R);
 
   previousEncoderError = error;
   previousFrontError = frontError;
