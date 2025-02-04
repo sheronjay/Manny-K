@@ -1,14 +1,15 @@
 #include "Ultrasonic.h"
 #include "ultraSonicSensors.h"
 #include "variablesAndParameters.h"
+#include <Arduino.h>
 
 // Define pins for ultrasonic sensors
-#define TRIG_LEFT 2
-#define ECHO_LEFT 3
-#define TRIG_FRONT 4
-#define ECHO_FRONT 5
-#define TRIG_RIGHT 6
-#define ECHO_RIGHT 7
+#define TRIG_LEFT 16
+#define ECHO_LEFT 17
+#define TRIG_FRONT 18
+#define ECHO_FRONT 19
+#define TRIG_RIGHT 23
+#define ECHO_RIGHT 22
 
 // Sensor objects
 Ultrasonic left(TRIG_LEFT, ECHO_LEFT);
@@ -29,11 +30,11 @@ void initializeSensors()
 void readThreeSensors()
 {
   // Read LEFT sensor
-  sensor_left = left.Ranging(CM);
+  sensor_left = left.read(CM);
 
   // Read FRONT sensor
-  sensor_front = front.Ranging(CM);
+  sensor_front = front.read(CM);
 
   // Read RIGHT sensor
-  sensor_right = right.Ranging(CM);
+  sensor_right = right.read(CM);
 }
