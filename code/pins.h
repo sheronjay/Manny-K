@@ -1,7 +1,7 @@
 #pragma once
 
 #define ENCAL 32
-#define ENCBL 33
+#define ENCBL 23
 
 #define ENCAR 34
 #define ENCBR 35
@@ -16,7 +16,10 @@
 #define IN1R 18
 #define IN2R 19
 
-// XSHUT pins
-#define SHT_LEFT 27
-#define SHT_FRONT 25
-#define SHT_RIGHT 26
+// Define pins for ultrasonic sensors
+#define TRIG_LEFT 25
+#define ECHO_LEFT 26
+#define TRIG_FRONT 12
+#define ECHO_FRONT 13
+#define TRIG_RIGHT 14
+#define ECHO_RIGHT 27   

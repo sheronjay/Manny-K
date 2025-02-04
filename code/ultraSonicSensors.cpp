@@ -2,14 +2,7 @@
 #include "ultraSonicSensors.h"
 #include "variablesAndParameters.h"
 #include <Arduino.h>
-
-// Define pins for ultrasonic sensors
-#define TRIG_LEFT 16
-#define ECHO_LEFT 17
-#define TRIG_FRONT 18
-#define ECHO_FRONT 19
-#define TRIG_RIGHT 23
-#define ECHO_RIGHT 22
+#include "pins.h"
 
 // Sensor objects
 Ultrasonic left(TRIG_LEFT, ECHO_LEFT);

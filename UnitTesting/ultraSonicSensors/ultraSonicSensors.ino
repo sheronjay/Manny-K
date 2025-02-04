@@ -1,4 +1,5 @@
 #include <Ultrasonic.h>
+#include <Arduino.h>
 
 // Define pins for ultrasonic sensors
 #define TRIG_PIN1 16
