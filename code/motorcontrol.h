@@ -8,7 +8,4 @@ void readEncoderR();
 
 void moveForward();
 
-void turnLeft();
-void turnRight();
-void turnBack();
 void applyBreak();

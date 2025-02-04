@@ -99,21 +99,6 @@ void moveForward()
     }
 }
 
-void turnLeft()
-{
-    turn(-90);
-}
-
-void turnRight()
-{
-    turn(90);
-}
-
-void turnBack()
-{
-    turn(180);
-}
-
 void applyBreak()
 {
     setMotor(-1, 200, PWML, IN1L, IN2L);
