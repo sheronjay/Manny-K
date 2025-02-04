@@ -7,6 +7,7 @@
 #include <algorithm>
 #include "checkMaze.h"
 #include "motorcontrol.h"
+#include "turning.h"
 #include <map>
 
 using namespace std;
