@@ -38,7 +38,7 @@ float KdLR = 0.2; // Derivative gain for no wall follow controller
 float KpF = 0.5; // Proportional gain for front sensor controller
 float KdF = 0.5; // Derivative gain for front sensor controller
 
-int motorSpeed = 60;
+int motorSpeed = 100;
 
 // Constants for the distance controller
 float previousError = 0;

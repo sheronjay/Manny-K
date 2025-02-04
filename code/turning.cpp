@@ -7,17 +7,16 @@
 
 void turn(int ang)
 {
+  int dir = 1;
+
   applyBreak();
-  if (ang > 0)
-  { // Turn right
-    setMotor(1, motorSpeed, PWML, IN1L, IN2L);
-    setMotor(-1, motorSpeed, PWMR, IN1R, IN2R);
-  }
-  else if (ang < 0)
+  if (ang < 0)
   { // Turn left
-    setMotor(-1, motorSpeed, PWML, IN1L, IN2L);
-    setMotor(1, motorSpeed, PWMR, IN1R, IN2R);
+    dir = -1;
   }
+
+  setMotor(dir, motorSpeed * 0.65, PWML, IN1L, IN2L);
+  setMotor(-dir, motorSpeed * 0.65, PWMR, IN1R, IN2R);
 
   while (abs(currentAngle) < abs(ang))
   { // Ensure we check absolute angles
@@ -25,20 +24,10 @@ void turn(int ang)
     delay(10);
   }
 
-  if (ang < 0)
-  { // stop right
-    setMotor(1, motorSpeed, PWML, IN1L, IN2L);
-    setMotor(-1, motorSpeed, PWMR, IN1R, IN2R);
-  }
-  else if (ang > 0)
-  { // stop left
-    setMotor(-1, motorSpeed, PWML, IN1L, IN2L);
-    setMotor(1, motorSpeed, PWMR, IN1R, IN2R);
-  }
-
-  delay(10);
-
-  // Stop the motors once the target angle is reached
+  //Stop the motors once the target angle is reached
+  setMotor(-dir, 180, PWML, IN1L, IN2L);
+  setMotor(dir, 180, PWMR, IN1R, IN2R);
+  delay(15);
   setMotor(0, 0, PWML, IN1L, IN2L);
   setMotor(0, 0, PWMR, IN1R, IN2R);
 

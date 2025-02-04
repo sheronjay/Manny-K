@@ -1,13 +1,10 @@
-#include "Ultrasonic.h"
 #include "ultraSonicSensors.h"
 #include "variablesAndParameters.h"
-#include <Arduino.h>
 #include "pins.h"
+#include <Arduino.h>
 
-// Sensor objects
-Ultrasonic left(TRIG_LEFT, ECHO_LEFT);
-Ultrasonic front(TRIG_FRONT, ECHO_FRONT);
-Ultrasonic right(TRIG_RIGHT, ECHO_RIGHT);
+// Speed of sound in cm/us
+#define SOUND_SPEED 0.034
 
 void initializeSensors()
 {
@@ -18,16 +15,35 @@ void initializeSensors()
   pinMode(ECHO_FRONT, INPUT);
   pinMode(TRIG_RIGHT, OUTPUT);
   pinMode(ECHO_RIGHT, INPUT);
+  Serial.println("Initializing sensors...");
+}
+
+long readUltrasonicDistance(int trigPin, int echoPin)
+{
+  // Send a 10us pulse to trigger the sensor
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  // Measure the duration of the echo pulse
+  long duration = pulseIn(echoPin, HIGH);
+
+  // Calculate the distance in cm
+  long distance = duration * SOUND_SPEED / 2;
+
+  return distance;
 }
 
 void readThreeSensors()
 {
   // Read LEFT sensor
-  sensor_left = left.read(CM);
+  sensor_left = readUltrasonicDistance(TRIG_LEFT, ECHO_LEFT);
 
   // Read FRONT sensor
-  sensor_front = front.read(CM);
+  sensor_front = readUltrasonicDistance(TRIG_FRONT, ECHO_FRONT);
 
   // Read RIGHT sensor
-  sensor_right = right.read(CM);
+  sensor_right = readUltrasonicDistance(TRIG_RIGHT, ECHO_RIGHT);
 }

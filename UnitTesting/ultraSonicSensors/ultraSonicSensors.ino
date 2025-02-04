@@ -1,13 +1,13 @@
 #include <Ultrasonic.h>
-#include <Arduino.h>
+// #include <Arduino.h>
 
 // Define pins for ultrasonic sensors
-#define TRIG_PIN1 16
-#define ECHO_PIN1 17
-#define TRIG_PIN2 18
-#define ECHO_PIN2 19
-#define TRIG_PIN3 23
-#define ECHO_PIN3 22
+#define TRIG_PIN1 25
+#define ECHO_PIN1 26
+#define TRIG_PIN2 12
+#define ECHO_PIN2 13
+#define TRIG_PIN3 14
+#define ECHO_PIN3 27
 
 // Create Ultrasonic objects for each sensor
 Ultrasonic ultrasonic1(TRIG_PIN1, ECHO_PIN1);

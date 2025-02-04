@@ -117,7 +117,9 @@ void turnBack()
 
 void applyBreak()
 {
-    setMotor(-1, motorSpeed, PWML, IN1L, IN2L);
-    setMotor(-1, motorSpeed, PWMR, IN1R, IN2R);
+    setMotor(-1, 200, PWML, IN1L, IN2L);
+    setMotor(-1, 200, PWMR, IN1R, IN2R);
     delay(10);
+    setMotor(0, 0, PWML, IN1L, IN2L);
+    setMotor(0, 0, PWMR, IN1R, IN2R);
 }
