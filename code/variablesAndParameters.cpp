@@ -1,6 +1,6 @@
 #include "variablesAndParameters.h"
 
-int forward_threshold = 25;  // Threshold for the front sensor to detect end of the path
+int forward_threshold = 22;  // Threshold for the front sensor to detect end of the path
 int side_threshold = 150;     // Threshold for the side sensors to detect a wall
 
 
@@ -14,31 +14,31 @@ float sensor_front = dist_to_single_wall;
 float sensor_right = dist_to_single_wall;
 
 int encoder_counts = 0;
-int encoder_counts_per_cell = 605; // measured practically, 98cm => 3360 pulses
+int encoder_counts_per_cell = 422; // measured practically, 98cm => 3360 pulses for 3.7cm diamter wheel
 
 int posL = 0; // Encoder position for left motor
 int posR = 0; // Encoder position for right motor
 
 float KpD = 0.25; // Proportional gain for distance controller
-float KdD = 0.68;   // Derivative gain for distance controller
+float KdD = 0.63;   // Derivative gain for distance controller
 
 float KpA = 1.0; // Proportional gain for angle controller
 float KiA = 0.0; // Integral gain for angle controller
 float KdA = 0.0; // Derivative gain for angle controller
 
 float KpR = 0.25; // Proportional gain for right distance controller
-float KdR = 0; // Derivative gain for right distance controller
+float KdR = 0.63; // Derivative gain for right distance controller
 
 float KpL = 0.25; // Proportional gain for left distance controller
-float KdL = 0; // Derivative gain for left distance controller
+float KdL = 0.63; // Derivative gain for left distance controller
 
-float KpLR = 1; // Proportional gain for no wall follow controller
+float KpLR = 0.1; // Proportional gain for no wall follow controller
 float KdLR = 0; // Derivative gain for no wall follow controller
 
 float KpF = 0; // Proportional gain for front sensor controller
 float KdF = 0; // Derivative gain for front sensor controller
 
-int motorSpeed = 58;
+int motorSpeed = 52;
 
 // Constants for the distance controller
 float previousError = 0;
@@ -47,3 +47,8 @@ float previousLeftError = 0;
 float previousRightError = 0;
 float previousFrontError = 0;
 int pwmValue = 0;
+
+
+// Constants for the angle controller
+float previousAngleError = 0;
+float currentAngle = 0;

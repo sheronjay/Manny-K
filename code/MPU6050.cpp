@@ -3,11 +3,11 @@
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
 #include "wifiUpdate.h"
+#include "variablesAndParameters.h"
 
 Adafruit_MPU6050 mpu;
 
 // Initialize global variables
-float currentAngle = 0.0;
 float gyroZ = 0.0;
 unsigned long lastTime = 0;  
 

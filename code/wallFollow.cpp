@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include "pins.h"
 #include "wifiUpdate.h"
+#include "MPU6050.h"
 
 void wallFollowPidControl(float sensor_left, float sensor_right)
 {
@@ -75,18 +76,18 @@ void rightWallFollowPidControl(float sensor_right)
 
 void noWallFollowPidControl()
 {
-  float error = posL - posR;
-  float derivative = error - previousEncoderError;
+  updateTurnedAngle();
+  float derivative = currentAngle - previousAngleError;
 
   float frontError = sensor_front - forward_threshold;
   float frontDerivative = frontError - previousFrontError;
 
   float pwmValueFront = KpF * frontError + KdF * frontDerivative;
 
-  pwmValue = KpLR * error + KdLR * derivative;
-  setMotor(1, motorSpeed - pwmValue + pwmValueFront, PWML, IN1L, IN2L);
-  setMotor(1, motorSpeed + pwmValue + pwmValueFront, PWMR, IN1R, IN2R);
+  pwmValue = KpLR * currentAngle + KdLR * derivative;
+  setMotor(1, motorSpeed + pwmValue + pwmValueFront, PWML, IN1L, IN2L);
+  setMotor(1, motorSpeed - pwmValue + pwmValueFront, PWMR, IN1R, IN2R);
 
-  previousEncoderError = error;
+  previousEncoderError = currentAngle;
   previousFrontError = frontError;
 }

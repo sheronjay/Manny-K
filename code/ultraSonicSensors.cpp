@@ -39,11 +39,15 @@ long readUltrasonicDistance(int trigPin, int echoPin)
 void readThreeSensors()
 {
   // Read LEFT sensor
+  Serial.println("Reading sensors...");
   sensor_left = readUltrasonicDistance(TRIG_LEFT, ECHO_LEFT);
+  Serial.println("Left done...");
 
   // Read FRONT sensor
   sensor_front = readUltrasonicDistance(TRIG_FRONT, ECHO_FRONT);
+  Serial.println("Front done...");
 
   // Read RIGHT sensor
   sensor_right = readUltrasonicDistance(TRIG_RIGHT, ECHO_RIGHT);
+  Serial.println("Right done...");
 }
