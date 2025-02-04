@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze Matrix</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 1px solid black;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Maze Matrix</h1>
+    <div id="matrix-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const socket = new WebSocket('ws://192.168.8.122:80');
+
+            socket.onopen = function () {
+                console.log('Connected to server');
+                socket.send(JSON.stringify({ action: "read" }));
+            };
+
+            socket.onmessage = function (event) {
+                const matrix = JSON.parse(event.data)['walls'];
+                displayMatrix(matrix);
+            };
+
+            function displayMatrix(matrix) {
+                const container = document.getElementById('matrix-container');
+                container.innerHTML = ''; // Clear previous matrix
+
+                const table = document.createElement('table');
+                matrix.forEach(row => {
+                    const tr = document.createElement('tr');
+                    row.forEach(cell => {
+                        const td = document.createElement('td');
+                        td.textContent = cell;
+                        tr.appendChild(td);
+                    });
+                    table.appendChild(tr);
+                });
+
+                container.appendChild(table);
+            }
+
+
+            // Refresh button
+            document.getElementById("refreshButton").addEventListener("click", () => {
+                socket.send(JSON.stringify({ action: "read" }));
+            });
+
+        });
+    </script>
+
+    <button id="refreshButton">Refresh</button>
+</body>
+
+</html>
