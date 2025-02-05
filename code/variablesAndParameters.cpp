@@ -1,6 +1,6 @@
 #include "variablesAndParameters.h"
 
-int forward_threshold = 22;  // Threshold for the front sensor to detect end of the path
+int forward_threshold = 25;  // Threshold for the front sensor to detect end of the path
 int side_threshold = 150;     // Threshold for the side sensors to detect a wall
 
 
@@ -38,7 +38,7 @@ float KdLR = 0; // Derivative gain for no wall follow controller
 float KpF = 0; // Proportional gain for front sensor controller
 float KdF = 0; // Derivative gain for front sensor controller
 
-int motorSpeed = 52;
+int motorSpeed = 50;
 
 // Constants for the distance controller
 float previousError = 0;

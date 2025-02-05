@@ -5,6 +5,7 @@
 #include <ArduinoJson.h>
 #include "wifi_cred.h"
 #include "variablesAndParameters.h"
+#include "algorithm.h"
 
 using namespace websockets;
 
@@ -60,6 +61,15 @@ void handleRead()
     doc["posL"] = posL;
     doc["posR"] = posR;
     doc["upload"] = upload;
+    JsonArray wallsArray = doc.createNestedArray("walls");
+    for (int i = 0; i < 16; i++)
+    {
+        JsonArray row = wallsArray.createNestedArray();
+        for (int j = 0; j < 16; j++)
+        {
+            row.add(walls[i][j]);
+        }
+    }
 
     String response;
     serializeJson(doc, response);

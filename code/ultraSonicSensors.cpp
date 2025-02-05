@@ -39,15 +39,43 @@ long readUltrasonicDistance(int trigPin, int echoPin)
 void readThreeSensors()
 {
   // Read LEFT sensor
-  Serial.println("Reading sensors...");
   sensor_left = readUltrasonicDistance(TRIG_LEFT, ECHO_LEFT);
-  Serial.println("Left done...");
 
   // Read FRONT sensor
   sensor_front = readUltrasonicDistance(TRIG_FRONT, ECHO_FRONT);
-  Serial.println("Front done...");
 
   // Read RIGHT sensor
   sensor_right = readUltrasonicDistance(TRIG_RIGHT, ECHO_RIGHT);
-  Serial.println("Right done...");
+}
+
+void readLeftSensor(void *parameter)
+{
+
+  for (;;)
+  {
+    // Infinite loop
+    sensor_left = readUltrasonicDistance(TRIG_LEFT, ECHO_LEFT);
+    vTaskDelay(100 / portTICK_PERIOD_MS); // Non-blocking delay
+  }
+}
+
+void readFrontSensor(void *parameter)
+{
+
+  for (;;)
+  {
+    // Infinite loop
+    sensor_front = readUltrasonicDistance(TRIG_FRONT, ECHO_FRONT);
+    vTaskDelay(100 / portTICK_PERIOD_MS); // Non-blocking delay
+  }
+}
+
+void readRightSensor(void *parameter)
+{
+  for (;;)
+  {
+    // Infinite loop
+    sensor_right = readUltrasonicDistance(TRIG_RIGHT, ECHO_RIGHT);
+    vTaskDelay(100 / portTICK_PERIOD_MS); // Non-blocking delay
+  }
 }

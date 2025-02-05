@@ -48,3 +48,8 @@ extern float previousLeftError;
 extern float previousRightError;
 extern float previousFrontError;
 extern int pwmValue;
+
+
+// Constants for the angle controller
+extern float previousAngleError;
+extern float currentAngle;

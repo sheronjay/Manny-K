@@ -67,6 +67,7 @@ void readEncoderL()
 
 void readEncoderR()
 {
+    encoder_counts++;
     int b = digitalRead(ENCBR);
     if (b > 0)
     {
@@ -86,6 +87,8 @@ void moveForward()
         readThreeSensors();
         if (sensor_left < side_threshold && sensor_right < side_threshold)
         {
+            dist_to_single_wall_left = sensor_left;
+            dist_to_single_wall_right = sensor_right;
             wallFollowPidControl(sensor_left, sensor_right);
         }
         else if (sensor_right >= side_threshold)
