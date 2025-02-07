@@ -82,7 +82,7 @@ void readEncoderR()
 void moveForward()
 {
     encoder_counts = 0;
-    while (encoder_counts < encoder_counts_per_cell)
+    while (encoder_counts < encoder_counts_per_cell && sensor_front > forward_threshold)
     {
         readThreeSensors();
         if (sensor_left < side_threshold && sensor_right < side_threshold)
@@ -98,6 +98,11 @@ void moveForward()
         else if (sensor_left >= side_threshold)
         {
             rightWallFollowPidControl(sensor_right);
+        }
+        else
+        {
+            setMotor(1, motorSpeed, PWML, IN1L, IN2L);
+            setMotor(1, motorSpeed, PWMR, IN1R, IN2R);
         }
     }
 }

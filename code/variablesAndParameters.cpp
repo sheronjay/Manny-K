@@ -1,6 +1,6 @@
 #include "variablesAndParameters.h"
 
-int forward_threshold = 25;  // Threshold for the front sensor to detect end of the path
+int forward_threshold = 30;  // Threshold for the front sensor to detect end of the path
 int side_threshold = 150;     // Threshold for the side sensors to detect a wall
 
 
@@ -14,13 +14,13 @@ float sensor_front = dist_to_single_wall;
 float sensor_right = dist_to_single_wall;
 
 int encoder_counts = 0;
-int encoder_counts_per_cell = 422; // measured practically, 98cm => 3360 pulses for 3.7cm diamter wheel
+int encoder_counts_per_cell = 360; // measured practically, 98cm => 3360 pulses for 3.7cm diamter wheel
 
 int posL = 0; // Encoder position for left motor
 int posR = 0; // Encoder position for right motor
 
-float KpD = 0.25; // Proportional gain for distance controller
-float KdD = 0.63;   // Derivative gain for distance controller
+float KpD = 0.27; // Proportional gain for distance controller
+float KdD = 0.75;   // Derivative gain for distance controller
 
 float KpA = 1.0; // Proportional gain for angle controller
 float KiA = 0.0; // Integral gain for angle controller

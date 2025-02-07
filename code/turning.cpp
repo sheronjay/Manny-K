@@ -50,16 +50,10 @@ void turnLeft()
   setMotor(-1, motorSpeed * 1.1, PWML, IN1L, IN2L);
   setMotor(1, motorSpeed * 1.1, PWMR, IN1R, IN2R);
 
-  while (abs(currentAngle) < 90 && abs(posR) < 150)
+  while (abs(currentAngle) < 60)
   { // Ensure we check absolute angles
     updateTurnedAngle();
     delay(10);
-  }
-
-  while (abs(posR) < 145)
-  {
-    delay(5);
-    printSerialAndSend(String(posL) + "," + String(posR));
   }
 
   // Stop the motors once the target angle is reached
@@ -83,17 +77,17 @@ void turnBack()
   setMotor(-1, motorSpeed * 1.1, PWML, IN1L, IN2L);
   setMotor(1, motorSpeed * 1.1, PWMR, IN1R, IN2R);
 
-  while (abs(currentAngle) < 180 && abs(posR) < 295)
+  while (abs(currentAngle) < 180)
   { // Ensure we check absolute angles
     updateTurnedAngle();
     delay(10);
   }
 
-  while (abs(posR) < 285)
-  {
-    delay(5);
-    printSerialAndSend(String(posL) + "," + String(posR));
-  }
+  // while (abs(posR) < 285)
+  // {
+  //   delay(5);
+  //   printSerialAndSend(String(posL) + "," + String(posR));
+  // }
 
   // Stop the motors once the target angle is reached
   setMotor(1, 180, PWML, IN1L, IN2L);
@@ -117,16 +111,10 @@ void turnRight()
   setMotor(1, motorSpeed * 1.1, PWML, IN1L, IN2L);
   setMotor(-1, motorSpeed * 1.1, PWMR, IN1R, IN2R);
 
-  while (abs(currentAngle) < 90 && abs(posR) < 150)
+  while (abs(currentAngle) < 90)
   { // Ensure we check absolute angles
     updateTurnedAngle();
     delay(10);
-  }
-
-  while (abs(posR) < 145)
-  {
-    delay(5);
-    printSerialAndSend(String(posL) + "," + String(posR));
   }
 
   // Stop the motors once the target angle is reached

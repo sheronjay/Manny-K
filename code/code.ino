@@ -2,8 +2,6 @@
 #include "wallFollow.h"
 #include "turning.h"
 #include "variablesAndParameters.h"
-#include "algorithm.h"
-#include "wifiUpdate.h"
 #include "motorcontrol.h"
 #include <Arduino.h>
 #include "pins.h"
@@ -18,21 +16,6 @@ void setup()
         delay(1);
     }
 
-    // algorithmSetup();
-
-    // wifi
-    wifiSetup();
-
-    // Create a FreeRTOS task for the WiFi loop
-    xTaskCreate(
-        wifiLoop,    // Task function
-        "WiFi Task", // Task name
-        4096,        // Stack size (in bytes)
-        NULL,        // Task parameters
-        1,           // Priority
-        NULL         // Task handle
-    );
-
     // motor setup
     Serial.println("Initializing motors...");
     encoderSetup();
@@ -43,8 +26,7 @@ void setup()
 
     Serial.println("Setup done");
 
-    printSerialAndSend("Setup done");
-    delay(3000);
+    delay(4000);
 }
 
 void loop()
@@ -55,22 +37,18 @@ void loop()
     {
         if (sensor_left < side_threshold && sensor_right < side_threshold)
         {
-            printSerialAndSend("Turning back");
             turnBack();
         }
         else if (sensor_left < side_threshold)
         {
-            printSerialAndSend("Turning right");
             turnRight();
         }
         else if (sensor_right < side_threshold)
         {
-            printSerialAndSend("Turning left");
             turnLeft();
         }
         else
         {
-            printSerialAndSend("both sides available, turnning left");
             turnLeft();
         }
     }
@@ -92,9 +70,11 @@ void loop()
         }
         else
         {
-            noWallFollowPidControl();
+            // noWallFollowPidControl();
+            setMotor(1, motorSpeed, PWML, IN1L, IN2L);
+            setMotor(1, motorSpeed, PWMR, IN1R, IN2R);
         }
     }
-    // algorithmLoop();
-    printSerialAndSend(String(sensor_left) + "," + String(sensor_front) + "," + String(sensor_right));
+
+
 }
